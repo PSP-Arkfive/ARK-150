@@ -7,8 +7,7 @@
 #include <pspsysevent.h>
 #include <psputilsforkernel.h>
 
-#include <module2.h>
-#include <macros.h>
+#include <cfwmacros.h>
 #include <systemctrl.h>
 
 #include "flashemu.h"
@@ -35,7 +34,7 @@ void ClearCaches()
     sceKernelIcacheInvalidateAll();
 }
 
-int OnModuleStart(SceModule2 *mod)
+int OnModuleStart(SceModule *mod)
 {
     char *moduleName = mod->modname;
 
@@ -49,7 +48,7 @@ int OnModuleStart(SceModule2 *mod)
         }
     }
 
-   if (previous)
+    if (previous)
       return previous(mod);
 
     return 0;
@@ -57,7 +56,7 @@ int OnModuleStart(SceModule2 *mod)
 
 int module_start(SceSize args, void *argp)
 {
-   previous = sctrlHENSetStartModuleHandler(OnModuleStart);
+    previous = sctrlHENSetStartModuleHandler(OnModuleStart);
     InstallFlashEmu();
     ClearCaches();
 

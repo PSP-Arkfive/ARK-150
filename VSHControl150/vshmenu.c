@@ -15,6 +15,8 @@
  * along with PRO CFW. If not, see <http://www.gnu.org/licenses/ .
  */
 
+#include <stdio.h>
+#include <string.h>
 #include <pspsdk.h>
 #include <pspsysmem_kernel.h>
 #include <pspkernel.h>
@@ -22,12 +24,11 @@
 #include <pspsysevent.h>
 #include <pspiofilemgr.h>
 #include <pspctrl.h>
-#include <stdio.h>
-#include <string.h>
-#include <ark.h>
+
 #include <systemctrl.h>
 #include <systemctrl_se.h>
-#include "systemctrl_private.h"
+#include <systemctrl_ark.h>
+
 
 #define SENSE_KEY (PSP_CTRL_CIRCLE|PSP_CTRL_TRIANGLE|PSP_CTRL_CROSS|PSP_CTRL_SQUARE|PSP_CTRL_START|PSP_CTRL_SELECT)
 

@@ -5,7 +5,7 @@
 #include <pspthreadman_kernel.h>
 
 #include "flashemu.h"
-#include "ark.h"
+#include "systemctrl_ark.h"
 
 char path[260];
 
@@ -45,34 +45,34 @@ static int FlashEmu_IoUmount();
 static int FlashEmu_IoDevctl(PspIoDrvFileArg *arg, const char *devname, unsigned int cmd, void *indata, int inlen, void *outdata, int outlen);
 static int FlashEmu_IoUnk21();
 
-static int DummyReturnZero();
+static long long DummyReturnZero();
 static int DummyReturnNotSupported();
 
 int SceLfatfsAssign();
 
 static PspIoDrvFuncs lflashFuncs = {
-    DummyReturnZero,    	 //IoInit
-    DummyReturnZero,    	 //IoExit
-    DummyReturnZero,    	 //IoOpen
-    DummyReturnZero,    	 //IoClose
-    DummyReturnZero,    	 //IoRead
-    DummyReturnZero,    	 //IoWrite
-    DummyReturnZero,    	 //IoLseek
-    DummyReturnZero,    	 //IoIoctl
-    DummyReturnNotSupported, //IoRemove
-    DummyReturnNotSupported, //IoMkdir
-    DummyReturnNotSupported, //IoRmdir
-    DummyReturnNotSupported, //IoDopen
-    DummyReturnNotSupported, //IoDclose
-    DummyReturnNotSupported, //IoDread
-    DummyReturnNotSupported, //IoGetstat
-    DummyReturnNotSupported, //IoChstat
-    DummyReturnNotSupported, //IoRename
-    DummyReturnNotSupported, //IoChdir
-    DummyReturnNotSupported, //IoMount
-    DummyReturnNotSupported, //IoUmount
-    DummyReturnZero,    	 //IoDevctl
-    DummyReturnNotSupported //IoUnk21
+    (void*)DummyReturnZero,    	 //IoInit
+    (void*)DummyReturnZero,    	 //IoExit
+    (void*)DummyReturnZero,    	 //IoOpen
+    (void*)DummyReturnZero,    	 //IoClose
+    (void*)DummyReturnZero,    	 //IoRead
+    (void*)DummyReturnZero,    	 //IoWrite
+    (void*)DummyReturnZero,    	 //IoLseek
+    (void*)DummyReturnZero,    	 //IoIoctl
+    (void*)DummyReturnNotSupported, //IoRemove
+    (void*)DummyReturnNotSupported, //IoMkdir
+    (void*)DummyReturnNotSupported, //IoRmdir
+    (void*)DummyReturnNotSupported, //IoDopen
+    (void*)DummyReturnNotSupported, //IoDclose
+    (void*)DummyReturnNotSupported, //IoDread
+    (void*)DummyReturnNotSupported, //IoGetstat
+    (void*)DummyReturnNotSupported, //IoChstat
+    (void*)DummyReturnNotSupported, //IoRename
+    (void*)DummyReturnNotSupported, //IoChdir
+    (void*)DummyReturnNotSupported, //IoMount
+    (void*)DummyReturnNotSupported, //IoUmount
+    (void*)DummyReturnZero,    	 //IoDevctl
+    (void*)DummyReturnNotSupported //IoUnk21
 };
 
 static PspIoDrvFuncs flashFatFuncs = {
@@ -175,7 +175,7 @@ static int FlashEmu_IoUnk21(PspIoDrvFileArg *arg)
     return SCE_ERROR_ERRNO150_ENOTSUP;
 }
 
-static int DummyReturnZero()
+static long long int DummyReturnZero()
 {
     return 0;
 }

@@ -1,18 +1,20 @@
+#include <stdio.h>
+#include <string.h>
 #include <pspsdk.h>
 #include <pspsysmem_kernel.h>
 #include <pspkernel.h>
 #include <psputilsforkernel.h>
 #include <pspsysevent.h>
 #include <pspiofilemgr.h>
-#include <stdio.h>
-#include <string.h>
 #include <pspumd.h>
+#include <psptypes.h>
+#include <pspctrl.h>
+
+#include <cfwmacros.h>
 #include <systemctrl.h>
 #include <systemctrl_se.h>
-#include <psptypes.h>
-#include <ark.h>
-#include <macros.h>
-#include "functions.h"
+#include <systemctrl_ark.h>
+
 
 PSP_MODULE_INFO("VshCtrl", 0x1007, 1, 2);
 
@@ -106,7 +108,7 @@ SceUID gamedread(SceUID fd, SceIoDirent * dir) {
 
 
 // GAME150 redirect patch
-static void patch_game_plugin_module(SceModule2 *mod) {
+static void patch_game_plugin_module(SceModule *mod) {
     u32 text_addr = mod->text_addr;
     u32 offsets[] = { 0x90dc, 0x9230, 0x92c8, 0x9304, 0x99b8, 0x9de8 };
 
@@ -144,7 +146,7 @@ static inline void ascii2utf16(char *dest, const char *src)
 }
 
 // Version info patch
-static void patch_sysconf_plugin_module(SceModule2 *mod) {
+static void patch_sysconf_plugin_module(SceModule *mod) {
     u32 addrhigh, addrlow;
     u32 text_addr = mod->text_addr;
 
@@ -178,7 +180,7 @@ static void patch_sceCtrlReadBufferPositive(void)
     sctrlHENPatchSyscall(g_sceCtrlReadBufferPositive, _sceCtrlReadBufferPositive);
 }
 
-static int vshpatch_module_chain(SceModule2 *mod)
+static int vshpatch_module_chain(SceModule *mod)
 {
     u32 text_addr = mod->text_addr;
     
