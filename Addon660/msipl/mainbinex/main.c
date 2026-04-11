@@ -1,8 +1,9 @@
 #include <pspsdk.h>
-#include <ark.h>
-#include <macros.h>
-#include <cache.h>
-#include "ansi_c_functions.h"
+
+#include <systemctrl_ark.h>
+#include <cfwmacros.h>
+
+#include "cache.h"
 
 void patchMainBin(void)
 {

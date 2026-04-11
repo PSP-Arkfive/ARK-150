@@ -1,4 +1,4 @@
-TARGET = satelite
+TARGET = satelite150
 OBJS = blit.o ui.o menu.o vpl.o trans.o trans_en.o stubkk.o main.o
 
 BUILD_PRX=1

@@ -1,9 +1,11 @@
-#include <pspsdk.h>
 #include <string.h>
-#include <sysreg.h>
-#include <syscon.h>
-#include <gpio.h>
-#include <fat.h>
+#include <pspsdk.h>
+
+#include <iplsdk/sysreg.h>
+#include <iplsdk/syscon.h>
+#include <iplsdk/gpio.h>
+#include <iplsdk/fat.h>
+#include <iplsdk/mspro.h>
 
 #define JAL_OPCODE    0x0C000000
 #define J_OPCODE    0x08000000
@@ -40,7 +42,7 @@ int entry()
         _sw(0x20040420, 0xbfc00ffc);
 
     char* path = "/TM/DCARK/150/msipl_01g.bin";
-    void* load_addr = 0x40e0000;
+    void* load_addr = (void*)0x40e0000;
 
     MsFatMount();
 

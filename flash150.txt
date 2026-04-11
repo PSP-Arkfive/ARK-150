@@ -1,0 +1,5 @@
+/kd/pspbtcnf.txt,Core/btcnf/pspbtcnf.txt
+/kd/pspbtcnf_game.txt,Core/btcnf/pspbtcnf_game.txt
+/kd/ark_systemctrl150.prx,dist/flash0/ark_systemctrl150.prx
+/kd/ark_vshctrl150.prx,dist/flash0/ark_vshctrl150.prx
+/vsh/module/ark_satelite150.prx,dist/flash0/ark_satelite150.prx
