@@ -8,11 +8,13 @@
 #include <rebootexconfig.h>
 #include <bootloadex.h>
 
-#include "../common/include/reboot150.h"
-#include "../rebootex150/rebootex150.h"
-#include "../rebootex660/payload.h"
-#include "../rebootex660/payload_tmctrl.h"
-#include "../common/include/reboot661.h"
+
+#include "../Rebootex/Rebootex150/rebootex150.h"
+#include "../Rebootex/Rebootex660/payload.h"
+#include "../Rebootex/Rebootex660/payload_tmctrl.h"
+
+REBOOT150_BUFFER
+REBOOT661_BUFFER
 
 // custom rebootex
 void* custom_rebootex = NULL;
