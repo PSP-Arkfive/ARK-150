@@ -15,8 +15,9 @@
  * along with PRO CFW. If not, see <http://www.gnu.org/licenses/ .
  */
 
+#include <cfwmacros.h>
+
 #include "common.h"
-#include "macros.h"
 
 const char *g_messages_en[] = {
     "SHUTDOWN DEVICE",

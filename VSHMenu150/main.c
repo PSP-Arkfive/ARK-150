@@ -19,9 +19,13 @@
  * vshMenu by neur0n, ported to ARK by Acid_Snake
  * based booster's vshex
  */
+#include <stdio.h>
 #include <pspkernel.h>
 #include <psputility.h>
-#include <stdio.h>
+
+#include <vshctrl.h>
+#include <systemctrl.h>
+
 #include "vpl.h"
 #include "blit.h"
 #include "trans.h"
@@ -45,8 +49,8 @@ SceCtrlData ctrl_pad;
 int stop_stock=0;
 int thread_id=0;
 
-const char ** g_messages;
-const char * g_messages_en[];
+extern const char ** g_messages;
+extern const char * g_messages_en[];
 
 int module_start(int argc, char *argv[])
 {
