@@ -18,10 +18,7 @@ Core:
 
 
 FlashPackage: Core
-	$(Q)mkdir -p dist/flash0
-	$(PY) $(BUILDTOOLS)/gz/pspgz.py dist/flash0/ark_systemctrl150.prx $(BUILDTOOLS)/gz/SystemControl.hdr Core/SystemControl150/systemctrl150.prx SystemControl 0x3007
-	$(PY) $(BUILDTOOLS)/gz/pspgz.py dist/flash0/ark_vshctrl150.prx $(BUILDTOOLS)/gz/SystemControl.hdr Core/VSHControl150/vshctrl150.prx VshControl 0x3007
-	$(PY) $(BUILDTOOLS)/gz/pspgz.py dist/flash0/ark_satelite150.prx $(BUILDTOOLS)/gz/UserModule.hdr Core/VSHMenu150/satelite150.prx Satelite 0x0000
+	$(Q)mkdir -p dist/
 	$(PY) $(BUILDTOOLS)/pack/pack.py -p dist/FLASH150.ARK flash150.txt -s
 
 
