@@ -1,34 +1,23 @@
 // Based on 3.90 M33 1.50 Addon Installer: https://github.com/mathieulh/3.90-M33/
 
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <malloc.h>
 #include <pspsdk.h>
 #include <pspkernel.h>
 #include <pspdebug.h>
 #include <pspctrl.h>
 #include <pspsuspend.h>
 #include <psppower.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <malloc.h>
 
-#include <ark.h>
 #include <systemctrl.h>
+#include <systemctrl_ark.h>
 #include <libpsardumper.h>
 #include <pspdecrypt.h>
 #include <kubridge.h>
-
-#include "pspbtcnf_game.h"
-#include "pspbtcnf.h"
-#include "reboot150.h"
-#include "systemctrl150.h"
-#include "tmctrl150.h"
-#include "ark_vshctrl150.h"
-#include "ark_satelite150.h"
-#include "mainbinex.h"
-#include "msipl_raw.h"
-
-#include "../common/include/rebootbin.h"
+#include <bootloadex.h>
 
 PSP_MODULE_INFO("legacy150_installer", 0x0800, 1, 0);
 PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_VSH);
@@ -57,7 +46,7 @@ ARKFile arkfiles[] =
     { ARK_DC_PATH "/150/kd/pspbtcnf_game.txt", pspbtcnf_game, sizeof(pspbtcnf_game) },
     { ARK_DC_PATH "/150/kd/pspbtcnf.txt", pspbtcnf, sizeof(pspbtcnf) },
     { ARK_DC_PATH "/150/msipl.raw", msipl_raw, sizeof(msipl_raw) },
-};
+};*/
 
 static const int N_FILES = (sizeof(arkfiles)/sizeof(arkfiles[0]));
 
