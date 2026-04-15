@@ -46,7 +46,7 @@ ARKFile arkfiles[] =
     { ARK_DC_PATH "/150/kd/pspbtcnf_game.txt", pspbtcnf_game, sizeof(pspbtcnf_game) },
     { ARK_DC_PATH "/150/kd/pspbtcnf.txt", pspbtcnf, sizeof(pspbtcnf) },
     { ARK_DC_PATH "/150/msipl.raw", msipl_raw, sizeof(msipl_raw) },
-};*/
+};
 
 static const int N_FILES = (sizeof(arkfiles)/sizeof(arkfiles[0]));
 
