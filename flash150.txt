@@ -5,4 +5,5 @@
 /vsh/module/ark_satelite150.prx,Core/VSHMenu150/satelite150.prx
 /reboot150.prx,Core/Reboot150/reboot150.prx
 /tmctrl150.prx,Core/TimeMachine150/tmctrl150.prx
-#/msipl.raw,Core/MSIPL/
+/mainbinex.raw,Core/MSIPL/mainbinex/mainbinex
+/msipl.raw,Core/MSIPL/stage1/msipl
