@@ -4,7 +4,7 @@ OBJS = main.o
 CFLAGS = -std=c99 -Os -G0 -Wall
 INCDIR =
 
-LIBS = -lpspkubridge -lpsppower -lpspDecrypt -lpspPSAR
+LIBS = -lpspkubridge -lpsppower -lpspdecrypt -lpsppsar
 
 CXXFLAGS = $(CFLAGS)
 ASFLAGS = $(CFLAGS)

@@ -38,6 +38,7 @@ enum {
     BTCNF_150,
     REBOOT_150,
     TMCTRL_150,
+    MAINBINEX_150,
     MSIPL_150,
 };
 
@@ -55,6 +56,7 @@ struct
     { "/kd/pspbtcnf.txt", NULL, 0 },
     { "/reboot150.prx", NULL, 0 },
     { "/tmctrl150.prx", NULL, 0 },
+    { "/mainbinex.raw", NULL, 0 },
     { "/msipl.raw", NULL, 0 },
 };
 
@@ -639,7 +641,7 @@ int WriteMsIpl()
 
     memset(g_dataOut, 0, 0x10000);
 
-    memcpy(g_dataOut, mainbinex, size_mainbinex);
+    memcpy(g_dataOut, arkfiles[MAINBINEX_150].buf, arkfiles[MAINBINEX_150].size);
 
     WriteFile(ARK_DC_PATH "/150/msipl_01g.bin", g_dataOut, cbExpanded + 0x10000);
 }
@@ -753,7 +755,7 @@ void ExtractPrxs(int cbFile)
                 if (strcmp(name, ARK_DC_PATH "/150/kd/loadexec.prx") == 0)
                 {
                     cbExpanded = GetReboot(g_dataOut2, g_dataOut, cbExpanded, 0);
-                    u8 *rebootBuf = FindRebootBinBuf(reboot150, reboot150_header, size_reboot150);
+                    u8 *rebootBuf = FindRebootBinBuf(arkfiles[REBOOT_150].buf, reboot150_header, arkfiles[REBOOT_150].size);
                     if (!rebootBuf)
                     {
                         ErrorExit(5000, "Unable to insert 150 reboot.bin into reboot150.prx\n");
