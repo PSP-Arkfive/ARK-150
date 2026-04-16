@@ -19,7 +19,7 @@
 #include <kubridge.h>
 #include <bootloadex.h>
 
-PSP_MODULE_INFO("legacy150_installer", 0x0800, 1, 0);
+PSP_MODULE_INFO("150Addon660", 0x0800, 1, 0);
 PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_VSH);
 
 #define printf    pspDebugScreenPrintf
@@ -29,26 +29,43 @@ PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_VSH);
 
 #define LOADEXEC_661_SIZE 0xBA00
 
-typedef struct
+
+enum {
+    SYSTEMCTRL_150,
+    VSHCTRL_150,
+    SATELITE_150,
+    BTCNF_GAME_150,
+    BTCNF_150,
+    REBOOT_150,
+    TMCTRL_150,
+    MSIPL_150,
+};
+
+struct
 {
     char *path;
     u8 *buf;
     int size;
-} ARKFile;
-
-ARKFile arkfiles[] =
+} arkfiles[] =
 {
-    { ARK_DC_PATH "/150/reboot150.prx", reboot150, sizeof(reboot150) },
-    { ARK_DC_PATH "/150/kd/ark_systemctrl150.prx", systemctrl150, sizeof(systemctrl150) },
-    { ARK_DC_PATH "/150/tmctrl150.prx", tmctrl150, sizeof(tmctrl150) },
-    { ARK_DC_PATH "/150/kd/ark_vshctrl150.prx", ark_vshctrl150, sizeof(ark_vshctrl150) },
-    { ARK_DC_PATH "/150/vsh/module/ark_satelite150.prx", ark_satelite150, sizeof(ark_satelite150) },
-    { ARK_DC_PATH "/150/kd/pspbtcnf_game.txt", pspbtcnf_game, sizeof(pspbtcnf_game) },
-    { ARK_DC_PATH "/150/kd/pspbtcnf.txt", pspbtcnf, sizeof(pspbtcnf) },
-    { ARK_DC_PATH "/150/msipl.raw", msipl_raw, sizeof(msipl_raw) },
+    { "/kd/ark_systemctrl150.prx", NULL, 0 },
+    { "/kd/ark_vshctrl150.prx", NULL, 0 },
+    { "/vsh/module/ark_satelite150.prx", NULL, 0 },
+    { "/kd/pspbtcnf_game.txt", NULL, 0 },
+    { "/kd/pspbtcnf.txt", NULL, 0 },
+    { "/reboot150.prx", NULL, 0 },
+    { "/tmctrl150.prx", NULL, 0 },
+    { "/msipl.raw", NULL, 0 },
 };
 
-static const int N_FILES = (sizeof(arkfiles)/sizeof(arkfiles[0]));
+typedef struct{
+    u8 filesize[4];
+    char namelen;
+    char name[1];
+} PkgFile;
+
+void* pkg_data = NULL;
+size_t pkg_size = 0;
 
 ////////////////////////////////////////////////////////////////////
 // big buffers for data. Some system calls require 64 byte alignment
@@ -88,9 +105,7 @@ u8 reboot661_header[REBOOT_HEADER_SIZE] =
     REBOOT661_HEADER
 };
 
-#define N_DELETE 13
-
-char *todelete[N_DELETE] =
+char *todelete[] =
 {
     "flash0:/vsh/module/lftv_main_plugin.prx",
     "flash0:/vsh/module/lftv_middleware.prx",
@@ -322,7 +337,6 @@ char *subset150[] =
     "flash0:/dic/aux3.dic"
 };
 
-static int N_150 = sizeof(subset150)/sizeof(subset150[0]);
 
 void ErrorExit(int milisecs, char *fmt, ...)
 {
@@ -378,6 +392,79 @@ int WriteFile(char *file, void *buf, int size)
     return written;
 }
 
+int CopyFile(char* orig, char* dest){
+
+    #define BUF_SIZE 16*1024
+    static unsigned char buf[BUF_SIZE];
+
+    int fdr = sceIoOpen(orig, PSP_O_RDONLY, 0777);
+    if (fdr < 0) return fdr;
+    int fdw = sceIoOpen(dest, PSP_O_WRONLY|PSP_O_CREAT|PSP_O_TRUNC, 0777);
+    if (fdw < 0){
+        sceIoClose(fdr);
+        return fdw;
+    }
+    while (1){
+        int read = sceIoRead(fdr, buf, BUF_SIZE);
+        if (read <= 0) break;
+        sceIoWrite(fdw, buf, read);
+    }
+    sceIoClose(fdr);
+    sceIoClose(fdw);
+    return 0;
+}
+
+int findPkgFile(void** buffer, size_t* size, const char* path){
+    u32 nfiles = *(u32*)(pkg_data);
+    PkgFile* cur = (PkgFile*)((size_t)(pkg_data)+4);
+
+    for (int i=0; i<nfiles; i++){
+        size_t filesize = (cur->filesize[0]) + (cur->filesize[1]<<8) + (cur->filesize[2]<<16) + (cur->filesize[3]<<24);
+        if (strncmp(path, cur->name, cur->namelen) == 0){
+            *buffer = (void*)((size_t)(&(cur->name[0])) + cur->namelen);
+            *size = filesize;
+            return 0;
+        }
+        cur = (PkgFile*)((size_t)(cur)+filesize+cur->namelen+5);
+    }
+    return -1;
+}
+
+int ReadPkgFile()
+{
+    SceUID fd = sceIoOpen("FLASH150.ARK", PSP_O_RDONLY, 0);
+    if (fd < 0)
+        return fd;
+
+    pkg_size = sceIoLseek(fd, 0, PSP_SEEK_END);
+    sceIoLseek(fd, 0, PSP_SEEK_SET);
+    
+    if (pkg_size <= 0)
+    {
+       	sceIoClose(fd);
+      	return -1;
+    }
+
+    pkg_data = malloc(pkg_size);
+    if (pkg_data == NULL) return -2;
+
+    int read = sceIoRead(fd, pkg_data, pkg_size);
+    
+    sceIoClose(fd);
+    
+    if (read < pkg_size) return -3;
+
+    return 0;
+}
+
+void LoadPkgFiles()
+{
+    for (int i=0; i<NELEMS(arkfiles); i++){
+        if (findPkgFile((void**)&(arkfiles[i].buf), &(arkfiles[i].size), arkfiles[i].path) < 0)
+            ErrorExit(5000, "Cannot find file in pkg: %s.\n", arkfiles[i].path);
+    }
+}
+
 static int FindTablePath(char *table, int table_size, char *number, char *szOut)
 {
     int i, j, k;
@@ -425,7 +512,7 @@ static int WritePrx(char *name)
 {
     int i;
 
-    for (i = 0; i < N_150; i++)
+    for (i = 0; i < NELEMS(subset150); i++)
     {
         if (strcmp(name, subset150[i]) == 0)
         {
@@ -582,7 +669,7 @@ static int GetReboot661()
 
     size = GetReboot(g_dataOut, g_dataOut2, size, 1);
 
-    u8 *rebootBuf = FindRebootBinBuf(systemctrl150, reboot661_header, size_systemctrl150);
+    u8 *rebootBuf = FindRebootBinBuf(arkfiles[SYSTEMCTRL_150].buf, reboot661_header, arkfiles[SYSTEMCTRL_150].size);
     if (!rebootBuf)
     {
         ErrorExit(5000, "Unable to insert 661 reboot.bin into systemctrl150.prx\n");
@@ -673,7 +760,7 @@ void ExtractPrxs(int cbFile)
                     }
                     memcpy(rebootBuf, g_dataOut, cbExpanded);
 
-                    rebootBuf = FindRebootBinBuf(systemctrl150, reboot150_header, size_systemctrl150);
+                    rebootBuf = FindRebootBinBuf(arkfiles[SYSTEMCTRL_150].buf, reboot150_header, arkfiles[SYSTEMCTRL_150].size);
                     if (!rebootBuf)
                     {
                         ErrorExit(5000, "Unable to insert 150 reboot.bin into systemctrl150.prx\n");
@@ -818,6 +905,13 @@ int main(void)
         ErrorExit(5000, "The 150 kernel addon only works on the PSP 1000\n");
     }
 
+    if (ReadPkgFile() < 0)
+    {
+        ErrorExit(5000, "Could not find FLASH150.ARK\n");
+    }
+
+    LoadPkgFiles();
+
     SceUID mod = LoadStartModule("libpsardumper.prx", PSP_MEMORY_PARTITION_KERNEL);
     if (mod < 0)
     {
@@ -855,11 +949,13 @@ int main(void)
 
     printf("Writing custom modules...\n");
 
-    for (i = 0; i < N_FILES; i++)
+    for (i = 0; i < NELEMS(arkfiles); i++)
     {
-        printf("Flashing %s... ", arkfiles[i].path);
-        
-        if (WriteFile(arkfiles[i].path, arkfiles[i].buf, arkfiles[i].size) != arkfiles[i].size)
+        char path[128];
+        strcpy(path, ARK_DC_PATH_150);
+        strcat(path, arkfiles[i].path);
+        printf("Flashing %s... ", path);
+        if (WriteFile(path, arkfiles[i].buf, arkfiles[i].size) != arkfiles[i].size)
         {
             ErrorExit(5000, "Error.\n");
         }

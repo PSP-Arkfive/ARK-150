@@ -15,6 +15,11 @@ Core:
 	$(Q)make -C Core/VSHControl150
 	$(Q)make -C Core/VSHMenu150
 	$(Q)make -C Core/TimeMachine150
+	$(Q)make -C Core/Reboot150
+
+
+Addon660:
+	$(Q)make -C Addon660
 
 
 FlashPackage: Core
@@ -28,4 +33,5 @@ clean:
 	$(Q)make -C Core/VSHControl150 clean
 	$(Q)make -C Core/VSHMenu150 clean
 	$(Q)make -C Core/TimeMachine150 clean
+	$(Q)make -C Core/Reboot150 clean
 	$(Q)rm -rf dist

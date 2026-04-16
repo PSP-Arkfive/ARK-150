@@ -2,35 +2,38 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-
 #include <pspkernel.h>
+#include <psputilsforkernel.h>
 
+#include <cfwmacros.h>
 #include <systemctrl.h>
-#include <rebootconfig.h>
-#include <macros.h>
+#include <systemctrl_ark.h>
+#include <rebootexconfig.h>
+#include <bootloadex.h>
 
-#include <common/include/reboot150.h>
-#include <rebootex150/rebootex150.h>
+#include "../Rebootex/Rebootex150/rebootex150.h"
 
 PSP_MODULE_INFO("Reboot150", PSP_MODULE_KERNEL | PSP_MODULE_SINGLE_START | PSP_MODULE_SINGLE_LOAD, 1, 0);
+
+REBOOT150_BUFFER
 
 int LoadReboot(void * arg1, unsigned int arg2, void * arg3, unsigned int arg4)
 {
     ARKConfig *ark_config = sctrlArkGetConfig(NULL);
-    RebootConfigARK *rebootex_config = sctrlHENGetRebootexConfig(NULL);
+    RebootexConfigARK *rebootex_config = (RebootexConfigARK *)sctrlHENGetRebootexConfig(NULL);
 
     rebootex_config->boot_from_fw_version = sceKernelDevkitVersion();
 
     // clean reboot memory
-    memset((char *)REBOOT150_TEXT, 0, 0x400000);
+    memset((void*)REBOOT150_TEXT, 0, 0x400000);
 
-    memcpy(REBOOTEX_TEXT, rebootex150, size_rebootex150);
+    memcpy((void*)REBOOTEX_TEXT, rebootex150, size_rebootex150);
 
     // Restore Reboot Buffer Configuration
-    memcpy((void *)REBOOTEX_CONFIG, &rebootex_config, sizeof(RebootConfigARK));
+    memcpy((void *)REBOOTEX_CONFIG, &rebootex_config, sizeof(RebootexConfigARK));
 
     // Restore ARK Configuration
-    memcpy(ARK_CONFIG, ark_config, sizeof(ARKConfig));
+    memcpy((void*)ARK_CONFIG, ark_config, sizeof(ARKConfig));
 
     return sceKernelGzipDecompress((void *)REBOOT150_TEXT, REBOOT150_SIZE, reboot150 + 0x10, 0);
 }
@@ -65,6 +68,7 @@ int module_start(SceSize args, void *argp)
 
 
     */
+
     sctrlHENSetLoadRebootOverrideHandler(LoadReboot);
 
     return 0;
