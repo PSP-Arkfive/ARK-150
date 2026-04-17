@@ -34,7 +34,7 @@ static ARKConfig _ark_conf = {
     .magic = ARK_CONFIG_MAGIC,
     .arkpath = DEFAULT_ARK_PATH,
     .exploit_id = {0}, // None by default
-    .exec_mode = DEV_UNK, // set by compat layer
+    .exec_mode = PSP_ORIG, // set by compat layer
     .recovery = 0,
 };
 ARKConfig* ark_config = &_ark_conf;
