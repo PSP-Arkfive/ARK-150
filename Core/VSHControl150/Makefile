@@ -2,7 +2,6 @@ TARGET = vshctrl150
 
 OBJS = \
 	main.o \
-	stubkk.o \
 	vshmenu.o \
 	registry.o \
 

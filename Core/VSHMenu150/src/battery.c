@@ -117,8 +117,13 @@ int battery_check(void) {
     struct KernelCallArg args;
 
     SysconGetBaryonVersion = (void (*)(u32*))sctrlHENFindFunction("sceSYSCON_Driver", "sceSyscon_driver", 0x7EC5A957);
-    SysregGetTachyonVersion = (u32 (*)(void))sctrlHENFindFunction("sceLowIO_Driver", "sceSysreg_driver", 0xE2A5D1EE);
+    SysregGetTachyonVersion = (u32 (*)(void))sctrlHENFindFunction("sceSYSREG_Driver", "sceSysreg_driver", 0xE2A5D1EE);
     SysconCmdExec = (int (*)(u8*, int))sctrlHENFindFunction("sceSYSCON_Driver", "sceSyscon_driver", 0x5B9ACC97);
+
+    if (SysconGetBaryonVersion == NULL || SysregGetTachyonVersion == NULL || SysconCmdExec == NULL) return -1;
+
+    return 0;
+
 
     memset(&args, 0, sizeof(args));
     args.arg1 = (int)&baryon;

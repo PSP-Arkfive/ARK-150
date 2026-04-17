@@ -16,6 +16,7 @@ void* sctrlArkGetConfig(ARKConfig* conf){
 // Set User Level
 int sctrlKernelSetUserLevel(int level)
 {
+    return 0; // TODO: not working on 1.50 -> crashes
     // Elevate Permission Level
     unsigned int k1 = pspSdkSetK1(0);
 
