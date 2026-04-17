@@ -16,210 +16,176 @@
  */
 
 /*
- * vshMenu by neur0n
+ * vshMenu by neur0n, ported to ARK by Acid_Snake
  * based booster's vshex
  */
-
-/* 
- * avshMenu by krazynez
- * based on PRO vsh, ME vsh, and ultimate vsh, and the Original ARK-4 vshmenu.
- * Plus myself and acid_snake's mentally insane thoughts and awesomeness ;-)
- */
-
 #include <stdio.h>
-#include <time.h>
-#include <stdbool.h>
-#include <string.h>
 #include <pspkernel.h>
 #include <psputility.h>
-#include <pspiofilemgr.h>
-#include <pspthreadman.h>
-#include <pspdisplay.h>
-#include <pspctrl.h>
-#include <pspumd.h>
 
-#include <kubridge.h>
 #include <vshctrl.h>
 #include <systemctrl.h>
-#include <systemctrl_se.h>
-#include <systemctrl_ark.h>
 
-#include "common.h"
 #include "vpl.h"
-#include "vsh.h"
 #include "blit.h"
 #include "trans.h"
-#include "ui.h"
-#include "battery.h"
-#include "config.h"
-#include "fonts.h"
-#include "menu.h"
-#include "advanced.h"
-#include "registry.h"
-#include "launcher.h"
+#include "common.h"
 
+int TSRThread(SceSize args, void *argp);
 
 /* Define the module info section */
-PSP_MODULE_INFO("VshCtrlSatelite", 0, 2, 2);
+PSP_MODULE_INFO("VshCtrlSatelite", 0, 1, 2);
+
 /* Define the main thread's attribute value (optional) */
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
 
-
-
-/* Extern functions */
-extern int scePowerRequestColdReset(int unk);
 extern int scePowerRequestStandby(void);
-extern int scePowerRequestSuspend(void);
 
+int menu_mode  = 0;
+u32 cur_buttons = 0xFFFFFFFF;
+u32 button_on  = 0;
+int stop_flag=0;
+SceCtrlData ctrl_pad;
+int stop_stock=0;
+int thread_id=0;
 
-/* Function prototypes */
-int module_start(int argc, char *argv[]);
-int module_stop(int argc, char *argv[]);
+extern const char ** g_messages;
+extern const char * g_messages_en[];
 
+int module_start(int argc, char *argv[])
+{
+    int thid;
 
-int TSRThread(SceSize args, void *argp) {
-    // change priority - needs to be the first thing executed when main thread started
-    sceKernelChangeThreadPriority(0, 8);
-    // register eat key function
-    vctrlVSHRegisterVshMenu(ui_eat_key);
-    
-    // init VPL
     vpl_init();
+    thid = sceKernelCreateThread("VshMenu_Thread", TSRThread, 16 , 0x1000 ,0 ,0);
+
+    thread_id=thid;
+
+    if (thid>=0) {
+        sceKernelStartThread(thid, 0, 0);
+    }
     
-    vsh_Menu *vsh = vsh_menu_pointer();
-    
-    // get psp model
-    vsh->psp_model = kuKernelGetModel();
+    return 0;
+}
 
-    strcpy(vsh->ark_version, "    ARK-150    ");
-    
-    // load config stuff
-    sctrlSEGetConfig((SEConfig*)&vsh->config.se);
-    sctrlArkGetConfig(&vsh->config.ark);
-    config_load(vsh);
-    if(vsh->config.ark_menu.advanced_vsh)
-        vsh->status.stop_flag = 15;
+int module_stop(int argc, char *argv[])
+{
+    SceUInt time = 100*1000;
+    int ret;
 
-    // load font
-    font_load(vsh);
-    // select menu language
-    select_language();
+    stop_flag = 1;
+    ret = sceKernelWaitThreadEnd( thread_id , &time );
 
-    memcpy(&vsh->config.old_se, &vsh->config.se, sizeof(vsh->config.se));
-    memcpy(&vsh->config.old_ark_menu, &vsh->config.ark_menu, sizeof(vsh->config.ark_menu));
+    if(ret < 0) {
+        sceKernelTerminateDeleteThread(thread_id);
+    }
 
-    
-resume:
-    while (vsh->status.stop_flag == 0) {
-        if (sceDisplayWaitVblankStart() < 0)
-        	break; // end of VSH ?
+    return 0;
+}
 
-        if (vsh->status.menu_mode > 0) {
-        	menu_setup();
-        	menu_draw();
+int EatKey(SceCtrlData *pad_data, int count)
+{
+    u32 buttons;
+    int i;
+
+    // copy true value
+    memcpy(&ctrl_pad, pad_data, sizeof(SceCtrlData));
+
+    // buttons check
+    buttons     = ctrl_pad.Buttons;
+    button_on   = ~cur_buttons & buttons;
+    cur_buttons = buttons;
+
+    // mask buttons for LOCK VSH controll
+    for(i=0;i < count;i++) {
+        pad_data[i].Buttons &= ~(
+                PSP_CTRL_SELECT|PSP_CTRL_START|
+                PSP_CTRL_UP|PSP_CTRL_RIGHT|PSP_CTRL_DOWN|PSP_CTRL_LEFT|
+                PSP_CTRL_LTRIGGER|PSP_CTRL_RTRIGGER|
+                PSP_CTRL_TRIANGLE|PSP_CTRL_CIRCLE|PSP_CTRL_CROSS|PSP_CTRL_SQUARE|
+                PSP_CTRL_HOME|PSP_CTRL_NOTE);
+
+    }
+
+    return 0;
+}
+
+static void button_func(void)
+{
+    int res;
+
+    // menu controll
+    switch(menu_mode) {
+        case 0:    
+            if( (cur_buttons & ALL_CTRL) == 0) {
+                menu_mode = 1;
+            }
+            break;
+        case 1:
+            res = menu_ctrl(button_on);
+
+            if(res != 0) {
+                stop_stock = res;
+                menu_mode = 2;
+            }
+            break;
+        case 2: // exit waiting 
+            // exit menu
+            if((cur_buttons & ALL_CTRL) == 0) {
+                stop_flag = stop_stock;
+            }
+            break;
+    }
+}
+
+int load_start_module(char *path)
+{
+    int ret;
+    SceUID modid;
+
+    modid = sceKernelLoadModule(path, 0, NULL);
+
+    if(modid < 0) {
+        return modid;
+    }
+
+    ret = sceKernelStartModule(modid, strlen(path) + 1, path, NULL, NULL);
+
+    return ret;
+}
+
+int TSRThread(SceSize args, void *argp)
+{
+    sceKernelChangeThreadPriority(0, 8);
+    vctrlVSHRegisterVshMenu(EatKey);
+
+    while(stop_flag == 0) {
+        if( sceDisplayWaitVblankStart() < 0)
+            break; // end of VSH ?
+
+        if(menu_mode > 0) {
+            menu_setup();
+            menu_draw();
         }
 
-        button_func(vsh);
+        button_func();
     }
 
-    config_check(vsh);
-
-    switch (vsh->status.stop_flag) {
-        case 2:
-        	scePowerRequestColdReset(0);
-        	break;
-        case 3:
-        	scePowerRequestStandby();
-        	break;
-        case 4:
-        	vsh->status.reset_vsh = 1;
-        	break;
-        case 5:
-        	scePowerRequestSuspend();
-        	break;
-        case 8:
-        	exec_recovery_menu(vsh);
-        	break;
-        case 15:
-        	// AVSHMENU START
-        	while(vsh->status.sub_stop_flag == 0) {
-        		if( sceDisplayWaitVblankStart() < 0)
-        			break; // end of VSH ?
-        		if(vsh->status.submenu_mode > 0) {
-        			submenu_setup();
-        			submenu_draw();
-        		}
-        		subbutton_func(vsh);
-        	}
-        	config_check(vsh);
-        	break;
+    /*if (stop_flag == 2) {
+        //sctrlPowerRebootStart(); // NOTHING WORKS RIGHT NOW
+        vshKernelExitVSH(1);
+    } 
+    */
+    if (stop_flag == 4) {
+        sctrlKernelExitVSH(NULL);
+    } else if (stop_flag == 3) {
+        scePowerRequestStandby();
     }
 
-    switch (vsh->status.sub_stop_flag) {
-        case 1:
-        	vsh->status.stop_flag = 0;
-        	vsh->status.menu_mode = 0;
-        	vsh->status.sub_stop_flag = 0;
-        	vsh->status.submenu_mode = 0;
-        	goto resume;
-        case 9:
-        	battery_convert(vsh->battery);
-        	break;
-        case 10:
-        	break;
-        case 11:
-        	activate_codecs(vsh);
-        	break;
-        case 12:
-        	swap_buttons(vsh);
-        	break;
-        case 13:
-        	import_classic_plugins(vsh, DEVPATH_MS0);
-        	if (vsh->psp_model == PSP_GO)
-        		import_classic_plugins(vsh, DEVPATH_EF0);
-        	break;
-        case 15:
-        	reset_ark_settings(vsh);
-        	break;
-    }
-
-    config_check(vsh);
-    clear_language();
     vpl_finish();
 
-    vctrlVSHExitVSHMenu((SEConfig*)&vsh->config.se, NULL, 0);
+    vctrlVSHExitVSHMenu(NULL, NULL, 0);
     release_font();
 
-    if (vsh->status.reset_vsh) {
-        sctrlKernelExitVSH(NULL);
-    }
-
     return sceKernelExitDeleteThread(0);
-}
-
-int module_start(int argc, char *argv[]) {
-    SceUID thid;
-    vsh_Menu *vsh = vsh_menu_pointer();
-    thid = sceKernelCreateThread("AVshMenu_Thread", TSRThread, 16, 0x1000, 0, NULL);
-
-    vsh->thread_id = thid;
-
-    if (thid >= 0)
-        sceKernelStartThread(thid, 0, 0);
-    
-    return 0;
-}
-
-int module_stop(int argc, char *argv[]) {
-    int ret;
-    vsh_Menu *vsh = vsh_menu_pointer();
-    SceUInt time = 100*1000;
-
-    vsh->status.stop_flag = 1;
-    ret = sceKernelWaitThreadEnd(vsh->thread_id, &time);
-
-    if (ret < 0)
-        sceKernelTerminateDeleteThread(vsh->thread_id);
-    
-    return 0;
 }
