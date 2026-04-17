@@ -122,9 +122,6 @@ int battery_check(void) {
 
     if (SysconGetBaryonVersion == NULL || SysregGetTachyonVersion == NULL || SysconCmdExec == NULL) return -1;
 
-    return 0;
-
-
     memset(&args, 0, sizeof(args));
     args.arg1 = (int)&baryon;
     kuKernelCall(SysconGetBaryonVersion, &args);
