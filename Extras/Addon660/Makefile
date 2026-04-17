@@ -1,10 +1,10 @@
 TARGET = ark150addon660
-OBJS = main.o
+OBJS = main.o installer.o
 
 CFLAGS = -std=c99 -Os -G0 -Wall
 INCDIR =
 
-LIBS = -lpspkubridge -lpsppower -lpspdecrypt -lpsppsar
+LIBS = -lmini2d -lpng -lpspgu -lpspgum -lz -lpspkubridge -lpsppower -lpspdecrypt -lpsppsar
 
 CXXFLAGS = $(CFLAGS)
 ASFLAGS = $(CFLAGS)
