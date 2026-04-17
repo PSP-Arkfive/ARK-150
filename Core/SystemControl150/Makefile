@@ -7,7 +7,10 @@ OBJS = \
 	src/loadexec.o \
 	src/modulemanager.o \
 	src/rebootex.o \
+	src/sctrl.o \
+	src/sctrl_se.o \
 	src/sctrl_hen.o \
+	src/kubridge.o \
 	src/syspatch.o \
 
 all: $(TARGET).prx

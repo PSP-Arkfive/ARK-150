@@ -39,6 +39,8 @@
 #define ALL_CTRL     (ALL_ALLOW|ALL_BUTTON|ALL_TRIGGER|ALL_FUNCTION)
 #define FORCE_LOAD   (PSP_CTRL_SELECT|ALL_TRIGGER)
 
+extern SEConfig* se_config;
+
 static int (*g_VshMenuCtrl) (SceCtrlData *, int);
 static SceUID g_satelite_mod_id = -1;
 
@@ -46,12 +48,13 @@ int (*g_sceCtrlReadBufferPositive) (SceCtrlData *, int) = NULL;
 
 int vctrlVSHRegisterVshMenu(int (*ctrl)(SceCtrlData *, int))
 {
-    u32 k1;
-   
-    k1 = pspSdkSetK1(0);
     g_VshMenuCtrl = (void *) ((u32) ctrl | 0x80000000);
-    pspSdkSetK1(k1);
+    return 0;
+}
 
+int vctrlVSHUpdateConfig(SEConfig *config)
+{
+    memcpy(se_config, config, sizeof(SEConfigARK));
     return 0;
 }
 

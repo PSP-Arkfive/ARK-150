@@ -24,6 +24,8 @@ static STMOD_HANDLER previous;
 extern int _sceCtrlReadBufferPositive(SceCtrlData *ctrl, int count);
 extern int (*g_sceCtrlReadBufferPositive) (SceCtrlData *, int count);
 
+SEConfig* se_config = NULL;
+
 typedef struct _HookUserFunctions {
     u32 nid;
     void *func;
@@ -206,6 +208,7 @@ static int vshpatch_module_chain(SceModule *mod)
 
 int module_start(SceSize args, void* argp)
 {
+    se_config = sctrlSEGetConfigInternal();
     previous = sctrlHENSetStartModuleHandler(vshpatch_module_chain);
     return 0;
 }

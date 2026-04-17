@@ -1,11 +1,11 @@
 TARGET = vshctrl150
 
 OBJS = \
+	main.o \
 	stubkk.o \
 	vshmenu.o \
-	main.o \
+	registry.o \
 
-all: $(TARGET).prx
 
 INCDIR = 
 CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic $(addprefix -I, $(INCDIR))
@@ -23,7 +23,7 @@ USE_KERNEL_LIBS=1
 
 LIBDIR = 
 LDFLAGS =  -nostartfiles
-LIBS = -lpspsystemctrl_kernel
+LIBS = -lpspsystemctrl_kernel -lpspreg
 
 PSP_FW_VERSION = 150
 

@@ -1,0 +1,56 @@
+#ifndef _ADVANCED_H
+#define _ADVANCED_H
+
+
+#include "vsh.h"
+
+
+#define SUBITEM_DEFAULT 0
+
+#define SUBITEM_USBREADONLY 1
+#define SUBITEM_USBREADONLY_END 2
+
+#define SUBITEM_SWAPXO 5
+#define SUBITEM_SWAPXO_END 6
+
+#define SUBITEM_PANDORA 22
+#define SUBITEM_PANDORA_END 23
+
+#define SUBITEM_UNSUPPORTED 32
+
+#define SUBITEM_USBDEVICE 34
+#define SUBITEM_USBDEVICE_END 37
+
+#define SUBITEM_NONE 38
+
+#define SUBITEM_COLOR 44
+#define SUBITEM_COLOR_END 72
+
+
+enum {
+    SUBMENU_USB_DEVICE,
+    SUBMENU_USB_READONLY,
+    SUBMENU_FG_COLORS,
+    SUBMENU_BG_COLORS,
+    SUBMENU_FONT,
+    SUBMENU_MENU_DESIGN,
+    SUBMENU_MAIN_MENU,
+    SUBMENU_CONVERT_BATTERY,
+    SUBMENU_SWAP_XO_BUTTONS,
+    SUBMENU_IMPORT_CLASSIC_PLUGINS,
+    SUBMENU_ACTIVATE_FLASH_WMA,
+    SUBMENU_DELETE_HIBERNATION,
+    SUBMENU_RESET_ARK_SETTINGS,
+    SUBMENU_GO_BACK,
+    SUBMENU_MAX
+};
+
+
+int submenu_draw(void);
+int submenu_find_longest_string(void);
+int submenu_setup(void);
+int submenu_ctrl(u32 button_on);
+void subbutton_func(vsh_Menu *vsh);
+
+
+#endif

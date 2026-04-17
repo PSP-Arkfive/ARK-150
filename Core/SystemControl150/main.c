@@ -39,11 +39,12 @@ static ARKConfig _ark_conf = {
 };
 ARKConfig* ark_config = &_ark_conf;
 
+
 // Boot Time Entry Point
 int module_start(SceSize args, void * argp)
 {
     pspSdkInstallNoDeviceCheckPatch();
-    pspSdkInstallNoPlainModuleCheckPatch(); 
+    //pspSdkInstallNoPlainModuleCheckPatch(); 
 
     // Apply Module Patches
     patchModuleManager();
