@@ -44,7 +44,7 @@ ARKConfig* ark_config = &_ark_conf;
 int module_start(SceSize args, void * argp)
 {
     pspSdkInstallNoDeviceCheckPatch();
-    //pspSdkInstallNoPlainModuleCheckPatch(); 
+    pspSdkInstallNoPlainModuleCheckPatch(); 
 
     // Apply Module Patches
     patchModuleManager();
