@@ -23,11 +23,6 @@ OBJS = \
 
 LIBS = -L $(PSPSDK)/lib -liplsdk -lansic
 
-ifdef DEBUG
-CFLAGS += -DDEBUG=$(DEBUG)
-LIBS += -lcolordebugger
-endif
-
 crt0.o : crt0.S
 	$(CC) -I$(PSPSDK)/include -c $< -o crt0.o
 
