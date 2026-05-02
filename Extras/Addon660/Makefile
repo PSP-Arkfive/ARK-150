@@ -4,7 +4,7 @@ OBJS = main.o installer.o
 CFLAGS = -std=c99 -Os -G0 -Wall
 INCDIR =
 
-LIBS = -lmini2d -lpng -lpspgu -lpspgum -lz -lpspkubridge -lpsppower -lpspdecrypt -lpsppsar
+LIBS = -lya2d -ltinyfont -lpng -lpspgu -lpspgum -lpspvram -lpspmath -lz -lpspkubridge -lpsppower -lpspjpeg -lpspdecrypt -lpsppsar
 
 CXXFLAGS = $(CFLAGS)
 ASFLAGS = $(CFLAGS)

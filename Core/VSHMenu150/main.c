@@ -189,3 +189,7 @@ int TSRThread(SceSize args, void *argp)
 
     return sceKernelExitDeleteThread(0);
 }
+
+void _exit(){
+    sceKernelStopUnloadSelfModule(0, NULL, NULL, NULL);
+}
