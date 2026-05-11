@@ -69,7 +69,7 @@ void drawMenu(){
     int tl = strlen(HEADER);
     int dx = ((w-8*tl)/2);
     ya2d_draw_rect(x+dx, y+5, 8*tl, 8, 0x8000ff00, 1);
-    tinyFontPrintTextScreen(msx, x + dx, y+5, HEADER, WHITE_COLOR, NULL);
+    tinyFontPrintTextScreenBuf(ya2d_get_drawbuffer(), msx, x + dx, y+5, HEADER, WHITE_COLOR, NULL);
 
     // menu items
     int cur_x;
@@ -79,14 +79,14 @@ void drawMenu(){
         cur_x = x + ((w-(8*tl))/2);
         ya2d_draw_rect(cur_x, cur_y+4, 8*tl, 8, color&0x00FFFFFF, 1);
         if(i==0)
-            tinyFontPrintTextScreen(msx, cur_x, cur_y+4, options[i], WHITE_COLOR, NULL);
+            tinyFontPrintTextScreenBuf(ya2d_get_drawbuffer(), msx, cur_x, cur_y+4, options[i], WHITE_COLOR, NULL);
         else
-            tinyFontPrintTextScreen(msx, cur_x, cur_y+5, options[i], WHITE_COLOR, NULL);
+            tinyFontPrintTextScreenBuf(ya2d_get_drawbuffer(), msx, cur_x, cur_y+5, options[i], WHITE_COLOR, NULL);
         cur_y += 10;
     }
 
     if (msg[0]){
-        tinyFontPrintTextScreen(msx, 480-8*strlen(msg), TOP+15, msg, msg_colors[msg_type], NULL);
+        tinyFontPrintTextScreenBuf(ya2d_get_drawbuffer(), msx, 480-8*strlen(msg), TOP+15, msg, msg_colors[msg_type], NULL);
     }
 }
 
@@ -104,7 +104,6 @@ int drawthread(SceSize args, void *argp){
 
         ya2d_finish_drawing();
         ya2d_swapbuffers();
-        tinyFontSwapBuffers();
     }
 
     return 0;
