@@ -23,8 +23,8 @@
 
 #define SUBITEM_NONE 38
 
-#define SUBITEM_COLOR 44
-#define SUBITEM_COLOR_END 72
+#define SUBITEM_COLOR 43
+#define SUBITEM_COLOR_END 71
 
 
 enum {
