@@ -5,7 +5,6 @@
 
 #include <systemctrl_ark.h>
 #include <rebootexconfig.h>
-#include <libpspexploit.h>
 #include <ya2d.h>
 #include <tinyfont.h>
 
