@@ -1,4 +1,4 @@
-TARGET = ark150addon660
+TARGET = ARK150on660
 OBJS = main.o installer.o
 
 CFLAGS = -std=c99 -Os -G0 -Wall

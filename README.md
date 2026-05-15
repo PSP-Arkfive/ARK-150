@@ -6,7 +6,7 @@ Only for PSP 1K consoles! For 2K and above consider using the LEDA plugin (avala
 
 # Installation of Kernel Addon for 6.60
 
-- Copy `ARK150Addon660` to `/PSP/GAME/` in your `Memory Stick`. If you installed the Full variant of FasterARK then it should already be available on the PSP.
+- Copy `ARK150on660` to `/PSP/GAME/` in your `Memory Stick`. If you installed the Full variant of FasterARK then it should already be available on the PSP.
 - Download the `1.50` firmware update, rename it to `150.PBP` and copy to the `Memory Stick`: https://archive.org/download/psp_ofw_firmwares/PSP/150.PBP
 - Run the app and proceed with installation.
 - Install all your 1.50 legacy homebrew to `/PSP/GAME150/` on your Memory Stick.
