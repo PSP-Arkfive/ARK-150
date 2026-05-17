@@ -4,11 +4,11 @@ OBJS = main.o installer.o
 CFLAGS = -std=c99 -Os -G0 -Wall
 INCDIR =
 
-LIBS = -lya2d -ltinyfont -lpng -lpspgum -lpspgu -lpspvram -lpspmath -lz -lpspkubridge -lpsppower -lpspdecrypt -lpsppsar
+LIBS = -lpspminicrt -lya2d -ltinyfont -lpng -lpspgum -lpspgu -lpspvram -lpspmalloc -lpspmath -lz -lpspkubridge -lpsppower -lpspdecrypt -lpsppsar
 
 CXXFLAGS = $(CFLAGS)
 ASFLAGS = $(CFLAGS)
-LDFLAGS =
+LDFLAGS = -nostartfiles
 BUILD_PRX = 1
 PSP_EBOOT_ICON = Resources/ICON0.PNG
 PSP_EBOOT_PIC1 = Resources/PIC1.PNG
