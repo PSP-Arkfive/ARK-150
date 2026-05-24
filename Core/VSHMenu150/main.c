@@ -165,18 +165,11 @@ resume:
         case 9:
         	battery_convert(vsh->battery);
         	break;
-        case 10:
-        	break;
         case 11:
         	activate_codecs(vsh);
         	break;
         case 12:
         	swap_buttons(vsh);
-        	break;
-        case 13:
-        	import_classic_plugins(vsh, DEVPATH_MS0);
-        	if (vsh->psp_model == PSP_GO)
-        		import_classic_plugins(vsh, DEVPATH_EF0);
         	break;
         case 15:
         	reset_ark_settings(vsh);

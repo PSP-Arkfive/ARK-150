@@ -174,29 +174,15 @@ int submenu_draw(void) {
         		blit_string(subitem_start_x, submenu_start_y, msg);
         	// for all other submenus (ie those with no subitems)
         	} else {
-        		// center-justify submenu options
-        		if (vsh->psp_model != PSP_GO && submax_menu == SUBMENU_DELETE_HIBERNATION) {
-        			// hibernation mode unsupported if model is not PSP Go
-        			len = strlen(g_messages[MSG_NO_HIBERNATION]);
-        	
-        			if (!vsh->config.ark_menu.window_mode) {
-        				padding = (window_char - len) / 2;
-        			} else if (vsh->config.ark_menu.window_mode) {
-        				padding = 1;
-        			}
-        			
-        			snprintf(msg, 128, "%*s%s%*s", padding, "", g_messages[MSG_NO_HIBERNATION], padding, "");
-        		} else {
-        			len = strlen(g_messages[MSG_USB_DEVICE + submax_menu]);
-        			
-        			if (!vsh->config.ark_menu.window_mode) {
-        				padding = (window_char - len) / 2;
-        			} else if (vsh->config.ark_menu.window_mode) {
-        				padding = 1;
-        			}
-        			
-        			snprintf(msg, 128, "%*s%s%*s", padding, "", g_messages[MSG_USB_DEVICE + submax_menu], padding, "");
-        		}
+                len = strlen(g_messages[MSG_USB_DEVICE + submax_menu]);
+                
+                if (!vsh->config.ark_menu.window_mode) {
+                    padding = (window_char - len) / 2;
+                } else if (vsh->config.ark_menu.window_mode) {
+                    padding = 1;
+                }
+                
+                snprintf(msg, 128, "%*s%s%*s", padding, "", g_messages[MSG_USB_DEVICE + submax_menu], padding, "");
         		
         		blit_string_ctr(submenu_start_y, msg);
         	
@@ -300,15 +286,6 @@ int submenu_setup(void) {
         vsh->config.ark_menu.avm_hidden[SUBMENU_CONVERT_BATTERY] = 1;
     }
 
-    if (IS_VITA_ADR(vsh->config.p_ark)){
-        vsh->config.ark_menu.avm_hidden[SUBMENU_USB_DEVICE] = 1;
-        vsh->config.ark_menu.avm_hidden[SUBMENU_USB_READONLY] = 1;
-    }
-
-    if (vsh->psp_model != PSP_GO){
-        vsh->config.ark_menu.avm_hidden[SUBMENU_DELETE_HIBERNATION] = 1;
-    }
-
     if (vsh->codecs){
         vsh->config.ark_menu.avm_hidden[SUBMENU_ACTIVATE_FLASH_WMA] = 1;
     }
@@ -326,15 +303,10 @@ int submenu_setup(void) {
     if ((vsh->config.se.usbdevice > 0) && (vsh->config.se.usbdevice < 5)) {
         sprintf(device_buf, "%s %d", g_messages[MSG_FLASH], vsh->config.se.usbdevice - 1);
         bridge = device_buf;
-    } else if (IS_VITA_ADR(vsh->config.p_ark)) {
-        sprintf(device_buf, "%s", g_messages[MSG_USE_ADRENALINE_SETTINGS]);
-        bridge = device_buf;
     } else {
         const char *device;
         if(vsh->config.se.usbdevice==5)
         	device= g_messages[MSG_UMD_DISC];
-        else if(vsh->psp_model == PSP_GO)
-        	device = g_messages[MSG_INTERNAL_STORAGE];
         else
         	device = g_messages[MSG_MEMORY_STICK];
 
@@ -453,21 +425,13 @@ int submenu_ctrl(u32 button_on) {
 
     switch(submenu_sel) {
         case SUBMENU_USB_DEVICE:
-        	if (IS_VITA_ADR(vsh->config.p_ark)) 
-        		break;
-        	if (direction) 
+        	if (direction)
         		change_usb(direction);
         	break;
         case SUBMENU_USB_READONLY:
-        	if (IS_VITA_ADR(vsh->config.p_ark)) 
-        		break;
         	if (direction) 
         		swap_readonly(direction);
         	break;
-        case SUBMENU_IMPORT_CLASSIC_PLUGINS:
-        	return 13; // Import Classic Plugins flag 
-        case SUBMENU_DELETE_HIBERNATION:
-        	return 10; // Delete Hibernation flag 
         case SUBMENU_RESET_ARK_SETTINGS:
         	return 15; // Reset ARK Settings flag
         case SUBMENU_ACTIVATE_FLASH_WMA:

@@ -32,11 +32,12 @@ u8 keyseed[0x20];
 // default config when none provided by the bootloader
 static ARKConfig _ark_conf = {
     .magic = ARK_CONFIG_MAGIC,
-    .arkpath = DEFAULT_ARK_PATH,
-    .exploit_id = {0}, // None by default
+    .arkpath = ARK_DC_PATH_150 "/",
+    .exploit_id = "TimeMachine",
     .exec_mode = PSP_ORIG, // set by compat layer
     .recovery = 0,
 };
+
 ARKConfig* ark_config = &_ark_conf;
 
 
