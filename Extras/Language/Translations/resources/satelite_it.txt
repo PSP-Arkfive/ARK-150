@@ -1,0 +1,72 @@
+Predefinito
+Disabilitato
+Abilitato
+Normale
+Modifica
+X -> O
+O -> X
+DISPOSITIVO USB
+PROTEGGI USB
+COLORE CARATTERI
+COLORE SFONDO
+FONT
+STILE MENU
+MENU PRINCIPALE
+MOD BATTERIA
+MODIFICA X/O
+IMPORTA PLUGINS CLASSICI
+ATTIVA FLASH E WMA
+ELIMINA IBERNAZIONE
+RESETTA IMPOSTAZIONI ARK
+INDIETRO
+IBERNAZIONE NON SUPPORTATA
+Normale -> Pandora
+Pandora -> Normale
+MENU VSH
+MENU VSH AVANZATO
+RECOVERY MENU ->
+SPEGNI CONSOLE
+SOSPENDI
+RIAVVIA CONSOLE
+RIAVVIA VSH
+ESCI
+Non Supportato
+USB di Adrenaline
+Flash
+UMD
+Memoria Interna
+Memory Stick
+Nessuno
+Classico
+Semplice
+Avanzato
+Nuovo
+Casuale
+Rosso
+Rosso trasparente
+Arancio
+Arancio trasparente
+Giallo
+Giallo trasparente
+Verde
+Verde trasparente
+Blu
+Blu trasparente
+Indaco
+Indaco trasparente
+Viola
+Viola trasparente
+Rosa
+Rosa trasparente
+Viola 
+Viola trasparente
+Verde Acqua
+Verde Acqua trasparente
+Acqua
+Acqua trasparente
+Grigio
+Grigio trasparente
+Nero
+Nero trasparente
+Bianco
+Bianco trasparente

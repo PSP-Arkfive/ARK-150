@@ -1,0 +1,72 @@
+DÇfaut
+DÇsactivÇ(e)
+ActivÇ(e)
+Normal(e)
+Basculer
+X -> O
+O -> X
+PêRIPHêRIQUE USB
+LECTURE SEULE USB
+COULEURS AVANT-PLAN
+COULEURS ARRI‘RE-PLAN
+POLICE
+CONCEPTION DE MENUS
+MENU PRINCIPALE
+CONVERTIR BATTERIE
+INVERSER BOUTONS X/O
+IMPORTER PLUGINS CLASSIQUE
+ACTIVER FLASH ET WMA
+SUPPRIMER LA MISE EN VEILLE
+R…INITIALISER LES PARAM»TRES DE L'ARK
+RETOUR
+MISE EN VEILLE NON SUPPORTê
+Normal -> Pandora
+Pandora -> Normal
+MENU VSH
+MENU AVANCê VSH
+MENU DE RêTABLISSEMENT ->
+êTEINDRE L'APPAREIL
+METTRE EN VEILLE L'APPAREIL
+RêINITIALISER L'APPAREIL
+RêINITIALISER LE VSH
+SORTIR
+Non pris en charge
+USB d'Adrenaline
+Flash
+UMD
+MÇmoire Interne
+Memory Stick
+Aucun(e)
+Classique
+Simple
+AvancÇe
+Nouveau
+AlÇatoire
+Rouge
+Rouge Clair
+Orange
+Orange Clair
+Jaune
+Jaune Clair
+Vert
+Vert Clair
+Bleu
+Bleu Clair
+Indigo
+Indigo Clair
+Violet
+Violet Clair
+Rose
+Rose Clair
+Mauve
+Mauve Clair
+Sarcelle
+Sarcelle Clair
+Aqua
+Aqua Clair
+Gris
+Gris Clair
+Noir
+Noir Clair
+Blanc
+Blanc Clair

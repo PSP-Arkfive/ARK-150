@@ -1,0 +1,72 @@
+Standaard
+Uit
+Aan
+Normaal
+Wisselen
+X -> O
+O -> X
+USB APPARAAT
+USB ENKEL-LEZEN
+FG KLEUREN
+BG KLEUREN
+LETTERTYPE
+MENU-ONTWERP
+HOOFDMENU
+BATTERIJ MOD
+X/O WISSELEN
+KLASSIEKE PLUGINS IMPORTEREN
+FLASH EN WMA ACTIVEREN
+SLAAPSTAND VERWIJDEREN
+RESET ARK-INSTELLINGEN
+TERUGGAAN
+GEEN SLAAPSTAND
+Normaal -> Pandora
+Pandora -> Normaal
+VSH-MENU
+GEAVANCEERD VSH-MENU
+HERSTELMENU ->
+APPARAAT AFSLUITEN
+APPARAAT SLAPEN
+APPARAAT HERSTARTEN
+VSH HERSTARTEN
+VERLATEN
+Niet-ondersteund
+Adrenaline USB
+Flash
+UMD
+Interne opslag
+Memory Stick
+Geen
+Klassiek
+Eenvoudig
+Geavanceerd
+Nieuw
+Willekeurig
+Rood
+Lichtrood
+Oranje
+Lichtoranje
+Geel
+Lichtgeel
+Groen
+Lichtgroen
+Blauw
+Lichtblauw
+Indigo
+Lichtindigo
+Violet
+Lichtviolet
+Roze
+Lichtroze
+Paars
+Lichtpaars
+Teal
+Licht teal
+Aqua
+Licht aqua
+Grijs
+Lichtgrijs
+Zwart
+Lichtzwart
+Wit
+Lichtwit

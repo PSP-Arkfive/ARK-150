@@ -1,0 +1,72 @@
+Standard
+Deaktiviert
+Aktiviert
+Normal
+éndern
+X -> O
+O -> X
+USB-VERBINDUNG
+USB READ-ONLY
+VORDERGRUND
+HINTERGRUND
+SCHRIFTART
+MENöGESTALTUNG
+HAUPTMENö
+BATTERIE KONV.
+X/O TAUSCHEN
+IMPORTIERE KLASSISCHE PLUGINS
+AKTIVIERE FLASH UND WMA
+ARK-EINSTELLUNGEN ZURöCKSETZEN
+PAUSIERUNG LôSCHEN
+ZURöCK
+KEINE PAUSEFUNKTION
+Normal -> Pandora
+Pandora -> Normal
+VSH MENö
+ERWEITERTES VSH MENö
+RECOVERY MENö ->
+GERéT AUSSCHALTEN
+STANDBY-MODUS
+GERéT NEUSTARTEN
+VSH NEUSTARTEN
+BEENDEN
+Nicht unterstÅtzt
+Adrenaline-USB
+Flash
+UMD
+Interner Speicher
+Memory Stick
+Keine
+Klassisch
+Einfach
+Erweitertes
+Neu
+Zufall
+Rot
+Hellrot
+Orange
+Hellorange
+Gelb
+Hellgelb
+GrÅn
+HellgrÅn
+Blau
+Hellblau
+Indigo
+Hellindigo
+Violett
+Hellviolett
+Rosa
+Hellrosa
+Lila
+Helllila
+TÅrkis
+HelltÅrkis
+Aqua
+Hellaqua
+Grau
+Hellgrau
+Schwarz
+Hellschwarz
+Wei·
+Hellwei·

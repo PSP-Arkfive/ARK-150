@@ -164,7 +164,7 @@ int load_external_font(const char *file) {
 
     static char pkgpath[ARK_PATH_SIZE];
     strcpy(pkgpath, vsh->config.p_ark->arkpath);
-    strcat(pkgpath, "LANG.ARK");
+    strcat(pkgpath, "LANG150.ARK");
 
     SceOff offset = findPkgOffset(file, &size, pkgpath);
 

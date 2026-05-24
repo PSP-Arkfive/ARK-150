@@ -872,6 +872,8 @@ static void Update()
     GetReboot661();
 
     WriteMsIpl();
+
+    CopyFile("LANG150.ARK", ARK_DC_PATH_150 "/LANG150.ARK");
 }
 
 int addon660_install(void)

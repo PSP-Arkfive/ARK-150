@@ -180,7 +180,7 @@ int load_translate_table(char ***table, char *file, int nr_trans) {
     SceIoStat stat;
     if (sceIoGetstat(linebuf, &stat) < 0){
         strcpy(linebuf, vsh->config.p_ark->arkpath);
-        strcat(linebuf, "LANG.ARK");
+        strcat(linebuf, "LANG150.ARK");
 
         unsigned size = 0;
         offset = findPkgOffset(file, &size, linebuf);

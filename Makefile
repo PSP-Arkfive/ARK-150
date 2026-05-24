@@ -8,9 +8,12 @@ BUILDTOOLS = $(PSPDEV)/share/psp-cfw-sdk/build-tools
 
 all: dist Core Installers
 	$(PY) $(BUILDTOOLS)/pack/pack.py -p dist/FLASH150.ARK flash150.txt -s
+	$(Q)$(PY) $(BUILDTOOLS)/pack/pkg-res.py Extras/Language LANG150.ARK
+	$(Q)mv Extras/Language/Translations/LANG150.ARK dist/
 	$(Q)cp Extras/660Addon/EBOOT.PBP dist/ARK150on660/
 	$(Q)cp Extras/660Addon/Resources/LIBS/* dist/ARK150on660/
 	$(Q)cp dist/FLASH150.ARK dist/ARK150on660/
+	$(Q)cp dist/LANG150.ARK dist/ARK150on660/
 	$(Q)echo "Done!"
 
 
