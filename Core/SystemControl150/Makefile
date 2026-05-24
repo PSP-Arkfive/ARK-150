@@ -10,8 +10,11 @@ OBJS = \
 	src/sctrl.o \
 	src/sctrl_se.o \
 	src/sctrl_hen.o \
+	src/oe_malloc.o \
 	src/kubridge.o \
 	src/syspatch.o \
+	src/plugin.o \
+	src/missingfunc.o \
 
 all: $(TARGET).prx
 INCDIR = include
