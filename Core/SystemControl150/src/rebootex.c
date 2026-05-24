@@ -72,8 +72,8 @@ void backupRebootBuffer(void)
     }
 
     // Copy ARK runtime Config
-    if (IS_ARK_CONFIG(ARK_CONFIG)) {
-        memcpy(ark_config, (void*)ARK_CONFIG, sizeof(ARKConfig));
+    if (IS_ARK_CONFIG(ARK_CONFIG_150)) {
+        memcpy(ark_config, (void*)ARK_CONFIG_150, sizeof(ARKConfig));
     }
     
     // Flush Cache

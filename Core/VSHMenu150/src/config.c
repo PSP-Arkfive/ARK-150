@@ -42,7 +42,7 @@ void config_load(vsh_Menu *vsh) {
     int is_pandora;
     char path[ARK_PATH_SIZE];
     strcpy(path, vsh->config.ark.arkpath);
-    strcat(path, "ARKMENU150.BIN");
+    strcat(path, MENU150_SETTINGS);
 
     config_reset(vsh);
 
@@ -65,7 +65,7 @@ void config_save(vsh_Menu *vsh){
     int fp;
     char path[ARK_PATH_SIZE];
     strcpy(path, vsh->config.ark.arkpath);
-    strcat(path, MENU_SETTINGS);
+    strcat(path, MENU150_SETTINGS);
 
     fp = sceIoOpen(path, PSP_O_WRONLY | PSP_O_CREAT | PSP_O_TRUNC, 0777);
     if (fp >= 0){
@@ -79,14 +79,14 @@ void config_check(vsh_Menu *vsh) {
     color_check_random(vsh);
     if (memcmp(&vsh->config.old_se, &vsh->config.se, sizeof(vsh->config.se)) || memcmp(&vsh->config.old_ark_menu, &vsh->config.ark_menu, sizeof(vsh->config.ark_menu))){
         vctrlVSHUpdateConfig((SEConfig*)&vsh->config.se);
-        config_save(vsh);	
+        config_save(vsh);
     }
 }
 
 void reset_ark_settings(vsh_Menu *vsh){
     char arkMenuPath[ARK_PATH_SIZE];
     strcpy(arkMenuPath, vsh->config.ark.arkpath);
-    strcat(arkMenuPath, MENU_SETTINGS);
+    strcat(arkMenuPath, MENU150_SETTINGS);
 
     sceIoRemove(arkMenuPath);
 
