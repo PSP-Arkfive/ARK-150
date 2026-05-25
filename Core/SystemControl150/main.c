@@ -24,6 +24,7 @@
 #include "modulemanager.h"
 #include "loadexec.h"
 #include "rebootex.h"
+#include "loadercore.h"
 
 PSP_MODULE_INFO("SystemControl150", 0x3007, 1, 0);
 
@@ -50,6 +51,7 @@ int module_start(SceSize args, void * argp)
     // Apply Module Patches
     patchModuleManager();
     patchLoadExec();
+    //patchLoaderCore();
 
     memcpy(keyseed, (void*)0x883f0000, 0x20); 
 
