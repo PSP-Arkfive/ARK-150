@@ -15,6 +15,7 @@
  * along with PRO CFW. If not, see <http://www.gnu.org/licenses/ .
  */
 
+#include <stdio.h>
 #include <string.h>
 #include <strings.h>
 #include <stdlib.h>
@@ -61,6 +62,12 @@ int sctrlIsLoadingPlugins(){
     return is_plugins_loading;
 }
 
+void logtext(const char* text){
+    SceUID fd = sceIoOpen("ms0:/ark150.log", PSP_O_WRONLY|PSP_O_APPEND|PSP_O_CREAT, 0777);
+    sceIoWrite(fd, text, strlen(text));
+    sceIoClose(fd);
+}
+
 static void addPlugin(const char* path){
     for (int i=0; i<plugins->count; i++){
         const char* cmp1 = strchr(plugins->paths[i], ':');
@@ -91,13 +98,22 @@ static void startPlugins()
     for (int i=0; i<plugins->count; i++){
         int res = 0;
         char* path = plugins->paths[i];
+
+        logtext("loadstart plugin "); logtext(path); logtext("\n");
+
         // Load Module
         SceUID uid = sceKernelLoadModule(path, 0, NULL);
         if (uid >= 0){
             // Start Module
             res = sceKernelStartModule(uid, strlen(path) + 1, path, NULL, NULL);
             // Unload Module on Error
-            if (res < 0) sceKernelUnloadModule(uid);
+            if (res < 0){
+                char msg[64]; sprintf(msg, "start err: %p\n", res); logtext(msg);
+                sceKernelUnloadModule(uid);
+            }
+        }
+        else {
+            char msg[64]; sprintf(msg, "load err: %p\n", uid); logtext(msg);
         }
     }
 }
@@ -383,7 +399,7 @@ static int ProcessConfigFile(
 
 
 void LoadPlugins(){
-    if (disable_plugins || sceKernelFindModuleByName("DesCemManager")!=NULL)
+    if (disable_plugins)
         return; // don't load plugins in recovery mode
     is_plugins_loading = 1;
     

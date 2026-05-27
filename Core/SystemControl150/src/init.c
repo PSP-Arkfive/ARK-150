@@ -75,21 +75,15 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
         // Forward to Handler
         result = customStartModule(modid, argsize, argp, modstatus, opt);
     }
-
-    // load settings before impose module
-    if (!settingsLoaded && strcmp(modname, "sceImpose_Driver") == 0){
-        // load settings
-        //loadSettings();
-        // Remember it
-        settingsLoaded = 1;
-    }
-
     // load plugins before starting mediasync
     if (!pluginLoaded && strcmp(modname, "sceMediaSync") == 0)
     {
+        // load settings
+        //loadSettings();
+        settingsLoaded = 1;
+
         // Load Plugins
         LoadPlugins();
-        // Remember it
         pluginLoaded = 1;
     }
     
@@ -102,47 +96,17 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
     return result;
 }
 
-// sceKernelStartModule Hook
-int patch_sceKernelStartModule_in_bootstart(int (* bootstart)(SceSize, void *), void * argp)
-{
-    u32 StartModule = JUMP(sctrlHENFindFunction("sceModuleManager", "ModuleMgrForUser", 0x50F0C1EC));
-    u32 addr = (u32)bootstart;
-    int patches = 1;
-    for (;patches; addr+=4){
+void patchInitStartModule(){
+    u32 StartModule = JUMP(sctrlHENFindFunction("sceModuleManager", "ModuleMgrForKernel", 0x50F0C1EC));
+    SceModule* mod = (SceModule *)sceKernelFindModuleByName("sceInit");
+
+    u32 text_addr = mod->text_addr;
+    u32 top_addr = text_addr + mod->text_size;
+
+    for (u32 addr=text_addr; addr<top_addr; addr+=4){
         if (_lw(addr) == StartModule){
-            // Replace Stub
             _sw(JUMP(InitKernelStartModule), addr);
             _sw(NOP, addr + 4);
-            patches--;
         }
     }
-    // Passthrough
-    return bootstart(4, argp);
-}
-
-// Patch Loader Core Module
-SceModule* patchLoaderCore(void)
-{
-    // Find Module
-    SceModule* mod = (SceModule *)sceKernelFindModuleByName("sceLoaderCore");
-
-    // Fetch Text Address
-    u32 start_addr = mod->text_addr;
-    u32 topaddr = mod->text_addr+mod->text_size;
-
-    // start the dynamic patching
-    for (u32 addr = start_addr; addr<topaddr; addr+=4){
-        u32 data = _lw(addr);
-        if (data == 0x02E0F809){
-            // Hook sceInit StartModule Call
-            _sw(JAL(patch_sceKernelStartModule_in_bootstart), addr);
-            // Move Real Bootstart into Argument #1
-            _sw(0x02E02021, addr+4);
-        }
-    }
-
-    // Flush Cache
-    sctrlFlushCache();
-
-    return mod;
 }

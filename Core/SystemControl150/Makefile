@@ -5,7 +5,7 @@ OBJS = \
 	src/flushcache.o \
 	src/hooknids.o \
 	src/loadexec.o \
-	src/loadercore.o \
+	src/init.o \
 	src/modulemanager.o \
 	src/rebootex.o \
 	src/sctrl.o \

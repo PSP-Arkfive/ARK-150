@@ -21,8 +21,8 @@
 // init.prx Custom sceKernelStartModule Handler
 extern int (* customStartModule)(int modid, SceSize argsize, void * argp, int * modstatus, SceKernelSMOption * opt);
 
-// Patch Loader Core Module
-SceModule* patchLoaderCore(void);
+// Patch Init Module
+void patchInitStartModule();
 
 #endif
 

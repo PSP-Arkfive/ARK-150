@@ -24,9 +24,10 @@
 #include "modulemanager.h"
 #include "loadexec.h"
 #include "rebootex.h"
-#include "loadercore.h"
+#include "init.h"
 
 PSP_MODULE_INFO("SystemControl150", 0x3007, 1, 0);
+
 
 u8 keyseed[0x20];
 
@@ -35,7 +36,7 @@ static ARKConfig _ark_conf = {
     .magic = ARK_CONFIG_MAGIC,
     .arkpath = ARK_DC_PATH_150 "/",
     .exploit_id = "TimeMachine",
-    .exec_mode = PSP_ORIG, // set by compat layer
+    .exec_mode = PSP_ORIG,
     .recovery = 0,
 };
 
@@ -51,7 +52,7 @@ int module_start(SceSize args, void * argp)
     // Apply Module Patches
     patchModuleManager();
     patchLoadExec();
-    //patchLoaderCore();
+    patchInitStartModule();
 
     memcpy(keyseed, (void*)0x883f0000, 0x20); 
 
