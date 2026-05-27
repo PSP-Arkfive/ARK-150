@@ -29,41 +29,6 @@
 #define ROLL_OVER(val, min, max) ( ((val) < (min)) ? (max): ((val) > (max)) ? (min) : (val) )
 
 
-const int cpu_list[] = {0, 20, 75, 100, 133, 166, 222, 266, 300, 333};
-const int bus_list[] = {0, 10, 37, 50, 66, 83, 111, 133, 150, 166};
-
-
-int cpu2no(int cpu)
-{
-    int i;
-
-    for(i=0; i<NELEMS(cpu_list); i++) {
-        if(cpu==cpu_list[i])
-        	return i;
-    }
-
-    return 0;
-}
-
-int bus2no(int cpu)
-{
-    int i;
-
-    for(i=0; i<NELEMS(bus_list); i++) {
-        if(cpu==bus_list[i])
-        	return i;
-    }
-
-    return 0;
-}
-
-void swap_readonly(int dir) {
-    vsh_Menu *vsh = vsh_menu_pointer();
-    
-    int sel = vsh->config.se.usbdevice_rdonly;
-    sel = ROLL_OVER(sel+dir, 0, 1);
-    vsh->config.se.usbdevice_rdonly=sel;
-}
 
 void change_bg_color(int dir) {
     vsh_Menu *vsh = vsh_menu_pointer();
@@ -102,24 +67,6 @@ void change_menu(int dir) {
     int sel = vsh->config.ark_menu.advanced_vsh;
     sel = ROLL_OVER(sel+dir, 0, 1);
     vsh->config.ark_menu.advanced_vsh = sel;
-}
-
-void change_usb(int dir) {
-    vsh_Menu *vsh = vsh_menu_pointer();
-    
-    int sel = vsh->config.se.usbdevice;
-    int top = (vsh->psp_model == PSP_GO) ? 4 : 5;
-
-    // select new
-    sel = ROLL_OVER(sel + dir, 0, top);
-    
-    vsh->config.se.usbdevice = sel;
-    
-    // Enable Read Only by default for Flash files and UMD Disc (on Non GO model)
-    if(sel>0)
-        vsh->config.se.usbdevice_rdonly = 1;
-    if(sel==0)
-        vsh->config.se.usbdevice_rdonly = 0;
 }
 
 void change_bool_option(int *p, int direction) {

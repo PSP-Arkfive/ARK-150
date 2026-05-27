@@ -30,7 +30,7 @@ int sub_stop_stock = 0;
 
 static int item_fcolor[SUBMENU_MAX];
 const char *subitem_str[SUBMENU_MAX];
-static int submenu_sel = SUBMENU_USB_DEVICE;
+static int submenu_sel = SUBMENU_FG_COLORS;
 
 
 int submenu_draw(void) {
@@ -64,8 +64,8 @@ int submenu_draw(void) {
     int window_char, window_pixel;
     int width = 0, temp = 0, i;
     // find widest submenu up until the button swap option
-    for (i = SUBMENU_USB_DEVICE; i <= SUBMENU_SWAP_XO_BUTTONS; i++){
-        temp = strlen(g_messages[MSG_USB_DEVICE + i]);
+    for (i = SUBMENU_FG_COLORS; i <= SUBMENU_SWAP_XO_BUTTONS; i++){
+        temp = strlen(g_messages[MSG_FG_COLORS + i]);
         if (temp > width)
         	width = temp;
     }
@@ -80,7 +80,7 @@ int submenu_draw(void) {
 
     int drawn = 0;
     for (submax_menu = 0; submax_menu < SUBMENU_MAX; submax_menu++){
-        if (g_messages[MSG_USB_DEVICE + submax_menu] && !vsh->config.ark_menu.avm_hidden[submax_menu]) {
+        if (g_messages[MSG_FG_COLORS + submax_menu] && !vsh->config.ark_menu.avm_hidden[submax_menu]) {
         	drawn++;
         }
     }
@@ -124,29 +124,29 @@ int submenu_draw(void) {
         temp = 0;
         int submenu_width = 0;
         // find widest submenu up until the button swap option
-        for (i = SUBMENU_USB_DEVICE; i <= SUBMENU_SWAP_XO_BUTTONS; i++){
-        	temp = strlen(g_messages[MSG_USB_DEVICE + i]);
+        for (i = SUBMENU_FG_COLORS; i <= SUBMENU_SWAP_XO_BUTTONS; i++){
+        	temp = strlen(g_messages[MSG_FG_COLORS + i]);
         	if (temp > submenu_width)
         		submenu_width = temp;
         }
 
         // display menu
-        if (g_messages[MSG_USB_DEVICE + submax_menu] && !vsh->config.ark_menu.avm_hidden[submax_menu]) {
+        if (g_messages[MSG_FG_COLORS + submax_menu] && !vsh->config.ark_menu.avm_hidden[submax_menu]) {
         	int len = 0, offset = 0, padding = 0;
         	subcur_menu = submax_menu;
         	drawn++;
-        	// submenus between USB_DEVICE and BUTTON_SWAP are the only ones with subitems
-        	if (submax_menu >= SUBMENU_USB_DEVICE && submax_menu <= SUBMENU_SWAP_XO_BUTTONS) {
+        	// submenus between FG_COLORS and BUTTON_SWAP are the only ones with subitems
+        	if (submax_menu >= SUBMENU_FG_COLORS && submax_menu <= SUBMENU_SWAP_XO_BUTTONS) {
         		int subitem_start_x = 0;
         		int space = 3;
         		
         		if (!vsh->config.ark_menu.window_mode) {
         			// left justify
-        			snprintf(msg, 128, " %-*s", submenu_width, g_messages[MSG_USB_DEVICE + submax_menu]);
+        			snprintf(msg, 128, " %-*s", submenu_width, g_messages[MSG_FG_COLORS + submax_menu]);
         			subitem_start_x = blit_string(submenu_start_x, submenu_start_y, msg);
         		} else if (vsh->config.ark_menu.window_mode) {
         			// right justify
-        			snprintf(msg, 128, " %s", g_messages[MSG_USB_DEVICE + submax_menu]);
+        			snprintf(msg, 128, " %s", g_messages[MSG_FG_COLORS + submax_menu]);
         			subitem_start_x = blit_string(submenu_start_x + (submenu_width - strlen(msg)) * font->width , submenu_start_y, msg);
         		}
         		
@@ -174,7 +174,7 @@ int submenu_draw(void) {
         		blit_string(subitem_start_x, submenu_start_y, msg);
         	// for all other submenus (ie those with no subitems)
         	} else {
-                len = strlen(g_messages[MSG_USB_DEVICE + submax_menu]);
+                len = strlen(g_messages[MSG_FG_COLORS + submax_menu]);
                 
                 if (!vsh->config.ark_menu.window_mode) {
                     padding = (window_char - len) / 2;
@@ -182,7 +182,7 @@ int submenu_draw(void) {
                     padding = 1;
                 }
                 
-                snprintf(msg, 128, "%*s%s%*s", padding, "", g_messages[MSG_USB_DEVICE + submax_menu], padding, "");
+                snprintf(msg, 128, "%*s%s%*s", padding, "", g_messages[MSG_FG_COLORS + submax_menu], padding, "");
         		
         		blit_string_ctr(submenu_start_y, msg);
         	
@@ -228,12 +228,6 @@ int submenu_find_longest_string(void){
     if (temp > width)
         width = temp;
     
-    for (i = SUBITEM_USBREADONLY; i <= SUBITEM_USBREADONLY_END; i++) {
-        temp = strlen(g_messages[i]);
-        if (temp > width)
-        	width = temp;
-    }
-    
     for (i = SUBITEM_SWAPXO; i <= SUBITEM_SWAPXO_END; i++) {
         temp = strlen(g_messages[i]);
         if (temp > width)
@@ -249,12 +243,6 @@ int submenu_find_longest_string(void){
     temp = strlen(g_messages[SUBITEM_UNSUPPORTED]);
     if (temp > width)
         width = temp;
-    
-    for (i = SUBITEM_USBDEVICE; i <= SUBITEM_USBDEVICE_END; i++) {
-        temp = strlen(g_messages[i]);
-        if (temp > width)
-        	width = temp;
-    }
     
     temp = strlen(g_messages[SUBITEM_NONE]);
     if (temp > width)
@@ -299,21 +287,6 @@ int submenu_setup(void) {
         }
     }
 
-    //usb device
-    if ((vsh->config.se.usbdevice > 0) && (vsh->config.se.usbdevice < 5)) {
-        sprintf(device_buf, "%s %d", g_messages[MSG_FLASH], vsh->config.se.usbdevice - 1);
-        bridge = device_buf;
-    } else {
-        const char *device;
-        if(vsh->config.se.usbdevice==5)
-        	device= g_messages[MSG_UMD_DISC];
-        else
-        	device = g_messages[MSG_MEMORY_STICK];
-
-        bridge = device;
-    }
-    subitem_str[SUBMENU_USB_DEVICE] = bridge;
-
     if (vsh->config.ark_menu.vsh_font)
         subitem_str[SUBMENU_FONT] = font_list()[vsh->config.ark_menu.vsh_font - 1];
     else
@@ -334,20 +307,6 @@ int submenu_setup(void) {
         case 0:
         	subitem_str[SUBMENU_MAIN_MENU] = g_messages[MSG_SIMPLE];
         	break;
-    }
-
-    switch (vsh->config.se.usbdevice_rdonly) {
-        case 0:
-        	subitem_str[SUBMENU_USB_READONLY] = g_messages[MSG_DISABLE];
-        	break;
-        case 1:
-        	subitem_str[SUBMENU_USB_READONLY] = g_messages[MSG_ENABLE];
-        	break;
-        case 2:
-        	subitem_str[SUBMENU_USB_READONLY] = g_messages[MSG_UNSUPPORTED];
-        	break;
-        default:
-        	subitem_str[SUBMENU_USB_READONLY] = g_messages[MSG_ENABLE];
     }
 
     subitem_str[SUBMENU_SWAP_XO_BUTTONS] = g_messages[MSG_O_PRIM-vsh->status.swap_xo];
@@ -424,14 +383,6 @@ int submenu_ctrl(u32 button_on) {
         return 0;
 
     switch(submenu_sel) {
-        case SUBMENU_USB_DEVICE:
-        	if (direction)
-        		change_usb(direction);
-        	break;
-        case SUBMENU_USB_READONLY:
-        	if (direction) 
-        		swap_readonly(direction);
-        	break;
         case SUBMENU_RESET_ARK_SETTINGS:
         	return 15; // Reset ARK Settings flag
         case SUBMENU_ACTIVATE_FLASH_WMA:

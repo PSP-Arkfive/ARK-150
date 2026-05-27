@@ -5,8 +5,6 @@ Normal
 Trocar
 X -> O
 O -> X
-DISPOSITIVO USB
-PROTEGER USB
 CORES FG
 CORES BG
 FONTE
@@ -28,9 +26,6 @@ REINICIAR CONSOLE
 REINICIAR VSH
 SAIR
 Nao Suportado
-Flash
-UMD
-Memory Stick
 Nenhum
 Simple
 Avan‡ado

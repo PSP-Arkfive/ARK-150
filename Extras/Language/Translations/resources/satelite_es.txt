@@ -5,13 +5,11 @@ Normal
 Cambiar
 X -> O
 O -> X
-DISPOSITIVO USB
-PROTEGER USB
 COLOR FG
 COLOR BG
 FUENTE
-DISE¥O DEL MENé
-MENé PRINCIPAL
+DISE¥O DEL MENU
+MENU PRINCIPAL
 CAMBIAR BATERIA
 CAMBIAR X/O
 ACTIVAR FLASH Y WMA
@@ -19,17 +17,14 @@ RESTABLECER AJUSTES DE ARK
 VOLVER
 Normal -> Pandora
 Pandora -> Normal
-MENé VSH
-MENé VSH AVANZADO
+MENU VSH
+MENU VSH AVANZADO
 APAGAR CONSOLA
 SUSPENDER
 REINICIAR
 RECARGAR
 SALIR
 Sin soporte
-Flash
-UMD
-Memory Stick
 Nada
 Clasico
 Simple
@@ -44,16 +39,16 @@ Amarillo
 Amarillo Claro
 Verde
 Verde Claro
-Az£l
-Az£l Claro
+AzUl
+AzUl Claro
 Indigo
 Indigo Claro
 Violeta
 Violeta Claro
 Rosa
 Rosa Claro
-P£rpura
-P£rpura Claro
+PUrpura
+PUrpura Claro
 Verde Azulado
 Verde Azulado Claro
 Agua

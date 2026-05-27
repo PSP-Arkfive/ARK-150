@@ -5,8 +5,6 @@ Normal
 éndern
 X -> O
 O -> X
-USB-VERBINDUNG
-USB READ-ONLY
 VORDERGRUND
 HINTERGRUND
 SCHRIFTART
@@ -27,9 +25,6 @@ GERéT NEUSTARTEN
 VSH NEUSTARTEN
 BEENDEN
 Nicht unterstÅtzt
-Flash
-UMD
-Memory Stick
 Keine
 Klassisch
 Einfach

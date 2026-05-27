@@ -17,8 +17,6 @@ all: dist Core Language Installers
 
 dist:
 	$(Q)mkdir -p dist/ARK150on660
-	$(Q)mkdir -p dist/ARK150Installer
-	$(Q)mkdir -p dist/ARK150Installer%
 
 
 Core:

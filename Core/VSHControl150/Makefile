@@ -4,7 +4,6 @@ OBJS = \
 	main.o \
 	vshmenu.o \
 	registry.o \
-	usbdevice.o \
 
 
 INCDIR = 
