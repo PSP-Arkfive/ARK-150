@@ -22,7 +22,8 @@ PSP_MODULE_INFO("VshCtrl", 0x1007, 1, 2);
 static STMOD_HANDLER previous;
 
 extern int _sceCtrlReadBufferPositive(SceCtrlData *ctrl, int count);
-extern int (*g_sceCtrlReadBufferPositive) (SceCtrlData *, int count);
+extern int (*g_sceCtrlReadBufferPositive)(SceCtrlData *, int count);
+extern void patch_sceUSB_Driver();
 
 SEConfig* se_config = NULL;
 
@@ -210,5 +211,6 @@ int module_start(SceSize args, void* argp)
 {
     se_config = sctrlSEGetConfigInternal();
     previous = sctrlHENSetStartModuleHandler(vshpatch_module_chain);
+    patch_sceUSB_Driver();
     return 0;
 }

@@ -254,8 +254,6 @@ int menu_ctrl(u32 button_on) {
         return 0;
 
     switch(menu_sel) {
-        case TMENU_RECOVERY_MENU:
-        	return 8; // Recovery menu flag
         case TMENU_ADVANCED_VSH:
         	return 15;
         case TMENU_SHUTDOWN_DEVICE:			

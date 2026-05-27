@@ -4,6 +4,7 @@ OBJS = \
 	main.o \
 	vshmenu.o \
 	registry.o \
+	usbdevice.o \
 
 
 INCDIR = 
@@ -22,7 +23,7 @@ USE_KERNEL_LIBS=1
 
 LIBDIR = 
 LDFLAGS =  -nostartfiles
-LIBS = -lpspsystemctrl_kernel -lpspreg
+LIBS = -lpspsystemctrl_kernel -lpspusbdevice_driver -lpspreg
 
 PSP_FW_VERSION = 150
 

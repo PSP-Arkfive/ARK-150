@@ -15,7 +15,6 @@ OBJS = \
 	src/vpl.o \
 	src/trans.o \
 	src/trans_en.o \
-	src/launcher.o
 
 BUILD_PRX = 1
 
