@@ -49,6 +49,16 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
 
     // VSH replacement
     if (strcmp(modname, "vsh_module") == 0){
+        if (ark_config->recovery){
+            // prevent vsh from loading
+            MAKE_DUMMY_FUNCTION_RETURN_0(mod->entry_addr);
+            // load recovery prx
+            SceUID modid = sceKernelLoadModule(RECOVERY150_PRX_FLASH, 0, NULL);
+            if(modid >= 0) {
+                ark_config->recovery = 0; // reset recovery mode for next reboot
+                sceKernelStartModule(modid, 0, NULL, NULL, NULL);
+            }
+        }
         // skip bootup animation
         if (se_config.skiplogos == 1 || se_config.skiplogos == 3) {
             vshmain_args = oe_malloc(1024);
