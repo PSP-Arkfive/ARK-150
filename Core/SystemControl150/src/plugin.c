@@ -33,7 +33,7 @@
 #define LINE_TOKEN_DELIMITER ','
 
 extern ARKConfig* ark_config;
-extern SEConfigARK se_config;
+extern SEConfigARK150 se_config;
 extern int lowerString(char*, char*, int);
 
 #define MAX_PLUGINS 64
@@ -54,6 +54,9 @@ enum {
 };
 static int cur_runlevel = RUNLEVEL_UNKNOWN;
 
+// Plugin Loader Status
+int pluginsLoaded = 0;
+int settingsLoaded = 0;
 int disable_plugins = 0;
 int disable_settings = 0;
 int is_plugins_loading = 0;
@@ -385,8 +388,89 @@ static int ProcessConfigFile(
     return -1;
 }
 
+static void settingsHandler(const char* path, u8 enabled){
+    if (strcasecmp(path, "cpuclock:333") == 0 || strcasecmp(path, "overclock") == 0){ // set CPU speed to max
+        if (enabled)
+            se_config.cpubus_clock = CPU_BUS_CLOCK_333;
+        else if (se_config.cpubus_clock == CPU_BUS_CLOCK_333) se_config.cpubus_clock = 0;
+    }
+    else if (strcasecmp(path, "cpuclock:133") == 0 || strcasecmp(path, "powersave") == 0){ // underclock to save battery
+        if (enabled)
+            se_config.cpubus_clock = CPU_BUS_CLOCK_133;
+        else if (se_config.cpubus_clock == CPU_BUS_CLOCK_133) se_config.cpubus_clock = 0;
+    }
+    else if (strcasecmp(path, "cpuclock:222") == 0 || strcasecmp(path, "defaultclock") == 0){
+        if (enabled)
+            se_config.cpubus_clock = CPU_BUS_CLOCK_222;
+        else if (se_config.cpubus_clock == CPU_BUS_CLOCK_222) se_config.cpubus_clock = 0;
+    }
+    else if (strncasecmp(path, "cpuclock:", 9) == 0){ // custom cpu clock
+        if (enabled){
+            unsigned long r = strtoul(path+9, NULL, 10);
+            se_config.custom_cpu_clock = r;
+            se_config.cpubus_clock = CPU_BUS_CLOCK_CUSTOM;
+        }
+        else se_config.custom_cpu_clock = 0;
+    }
+    else if (strncasecmp(path, "busclock:", 9) == 0){ // custom bus clock
+        if (enabled){
+            unsigned long r = strtoul(path+9, NULL, 10);
+            se_config.custom_bus_clock = r;
+        }
+        else se_config.custom_bus_clock = 0;
+    }
+    else if (strcasecmp(path, "mscache") == 0){
+        se_config.msspeed = enabled; // enable ms cache for speedup
+    }
+    else if (strcasecmp(path, "noled") == 0){
+        se_config.noled = enabled;
+    }
+    else if (strcasecmp(path, "noumd") == 0){
+        se_config.noumd = enabled;
+    }
+    else if (strcasecmp(path, "noanalog") == 0){
+        se_config.noanalog = enabled;
+    }
+    else if (strcasecmp(path, "vitamute") == 0){
+        se_config.vitamute = enabled;
+    }
+    else if (strcasecmp(path, "hidemac") == 0){ // hide mac address
+        se_config.hidemac = enabled;
+    }
+    else if (strcasecmp(path, "qaflags") == 0){ // QA Flags
+        se_config.qaflags = enabled;
+    }
+    else if (strncasecmp(path, "fakeregion_", 11) == 0){
+        unsigned long r = strtoul(path+11, NULL, 10);
+        se_config.vshregion = (enabled)?r:0;
+    }
+    else if (strncasecmp(path, "skiplogos", 9) == 0){
+        char* c = strchr(path, ':');
+        se_config.skiplogos = enabled;
+        if (enabled && c){
+            if (strcasecmp(c+1, "gameboot") == 0) se_config.skiplogos = 2;
+            else if (strcasecmp(c+1, "coldboot") == 0) se_config.skiplogos = 3;
+        }
+    }
+    else if (strncasecmp(path, "hidepics", 8) == 0){ // hide PIC0 and PIC1
+        char* c = strchr(path, ':');
+        se_config.hidepics = enabled;
+        if (enabled && c){
+            if (strcasecmp(c+1, "pic0") == 0) se_config.hidepics = 2;
+            else if (strcasecmp(c+1, "pic1") == 0) se_config.hidepics = 3;
+        }
+    }
+}
 
-void LoadPlugins(){
+static void settingsEnabler(const char* path){
+    settingsHandler(path, 1);
+}
+
+static void settingsDisabler(const char* path){
+    settingsHandler(path, 0);
+}
+
+void loadPlugins(){
     if (disable_plugins)
         return; // don't load plugins in recovery mode
     is_plugins_loading = 1;
@@ -405,4 +489,16 @@ void LoadPlugins(){
     oe_free(plugins);
     plugins = NULL;
     is_plugins_loading = 0;
+}
+
+void loadSettings(){
+    if (disable_settings)
+        return; // don't load settings in recovery mode
+
+    // process settings file
+    char path[ARK_PATH_SIZE];
+    strcpy(path, ark_config->arkpath);
+    strcat(path, ARK_SETTINGS);
+    if (ProcessConfigFile(NULL, path, settingsEnabler, settingsDisabler) < 0) // try external settings
+        ProcessConfigFile(NULL, ARK_SETTINGS150_FLASH, settingsEnabler, settingsDisabler); // retry flash1 settings
 }

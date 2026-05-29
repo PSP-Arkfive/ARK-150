@@ -15,14 +15,17 @@
  * along with PRO CFW. If not, see <http://www.gnu.org/licenses/ .
  */
 
-#ifndef _INIT_H_
-#define _INIT_H_
+#ifndef _SEPLUGINS_H_
+#define _SEPLUGINS_H_
 
-// init.prx Custom sceKernelStartModule Handler
-extern int (* customStartModule)(int modid, SceSize argsize, void * argp, int * modstatus, SceKernelSMOption * opt);
+extern int pluginsLoaded;
+extern int settingsLoaded;
+extern int disable_plugins;
+extern int disable_settings;
+extern int is_plugins_loading;
 
-// Patch Init Module
-void patchInitStartModule();
+void loadPlugins();
+void loadSettings();
 
 #endif
 

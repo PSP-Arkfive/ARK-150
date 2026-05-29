@@ -14,8 +14,8 @@
 // Config stuff go here
 typedef struct _vsh_Config{
     // SE config
-    SEConfigARK se;
-    SEConfigARK old_se;
+    SEConfigARK150 se;
+    SEConfigARK150 old_se;
     
     // ARK menu config
     ArkMenuConf ark_menu;

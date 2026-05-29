@@ -26,15 +26,10 @@
 #include <systemctrl_se.h>
 #include <systemctrl_ark.h>
 
+#include "plugin.h"
 
-extern SEConfigARK se_config;
+extern SEConfigARK150 se_config;
 extern ARKConfig* ark_config;
-
-extern void LoadPlugins();
-
-// Plugin Loader Status
-int pluginLoaded = 0;
-int settingsLoaded = 0;
 
 // init.prx Custom sceKernelStartModule Handler
 int (* customStartModule)(int modid, SceSize argsize, void * argp, int * modstatus, SceKernelSMOption * opt) = NULL;
@@ -77,15 +72,15 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
     }
 
     // load plugins after starting mediasyncs
-    if (!pluginLoaded && strcmp(modname, "sceImpose_Driver") == 0)
+    if (!pluginsLoaded && strcmp(modname, "sceImpose_Driver") == 0)
     {
         // load settings
-        //loadSettings();
+        loadSettings();
         settingsLoaded = 1;
 
         // Load Plugins
-        LoadPlugins();
-        pluginLoaded = 1;
+        loadPlugins();
+        pluginsLoaded = 1;
     }
     
     // start module

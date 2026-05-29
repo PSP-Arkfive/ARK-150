@@ -32,34 +32,11 @@
 #include <systemctrl_ark.h>
 
 
-SEConfigARK se_config = {
+SEConfigARK150 se_config = {
     .magic = ARK_CONFIG_MAGIC,
-    .umdseek = 0,
-    .cpubus_clock = 0,
-    .disable_pause = 0,
-    .hidedlc = 0,
-    .umdregion = 0,
-    .vshregion = 0,
-    .usbdevice = 0,
-    .usbcharge = 0,
-    .hidemac = 0,
-    .launcher_mode = 0,
-    .hidepics = 0,
-    .qaflags = 0,
-    .usbdevice_rdonly = 2,
-    .skiplogos = 0,
-    .noumd = 0,
-    .hibblock = 0,
-    .noanalog = 0,
-    .oldplugin = 0,
-    .msspeed = 0,
-    .iso_cache_type = 0,
-    .iso_cache_size_kb = 4,
-    .iso_cache_num = 8,
-    .iso_cache_partition = PSP_MEMORY_PARTITION_KERNEL,
-    .noled = 0, // always false
-    .wpa2 = 0, /* not used by default */
-    .force_high_memory = 0,
+    .qaflags = 1,
+    .msspeed = 1,
+    .vitamute = 1,
 };
 
 // we keep this here for compatibility
@@ -75,7 +52,7 @@ SEConfigARK se_config = {
 */
 int sctrlSEGetConfig(SEConfig *config)
 {
-    if (config) memcpy(config, &se_config, sizeof(SEConfigARK));
+    if (config) memcpy(config, &se_config, sizeof(SEConfigARK150));
     return 0;
 }
 
@@ -88,7 +65,7 @@ int sctrlSEGetConfig(SEConfig *config)
 */
 int sctrlSEGetConfigEx(SEConfig *config, int size)
 {
-    if (config && size == sizeof(SEConfigARK)){
+    if (config && size == sizeof(SEConfigARK150)){
         memcpy(config, &se_config, size);
     }
     return 0;
@@ -104,7 +81,7 @@ int sctrlSEGetConfigEx(SEConfig *config, int size)
 */
 int sctrlSESetConfig(SEConfig *config)
 {
-    memcpy(&se_config, config, sizeof(SEConfigARK));
+    memcpy(&se_config, config, sizeof(SEConfigARK150));
     return 0;
 }
 
@@ -117,7 +94,7 @@ int sctrlSESetConfig(SEConfig *config)
 */
 int sctrlSESetConfigEx(SEConfig *config, int size)
 {
-    if (config && size == sizeof(SEConfigARK)){
+    if (config && size == sizeof(SEConfigARK150)){
         memcpy(&se_config, config, size);
         return 0;
     }
