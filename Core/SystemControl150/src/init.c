@@ -75,8 +75,9 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
         // Forward to Handler
         result = customStartModule(modid, argsize, argp, modstatus, opt);
     }
-    // load plugins before starting mediasync
-    if (!pluginLoaded && strcmp(modname, "sceMediaSync") == 0)
+
+    // load plugins after starting mediasyncs
+    if (!pluginLoaded && strcmp(modname, "sceImpose_Driver") == 0)
     {
         // load settings
         //loadSettings();
