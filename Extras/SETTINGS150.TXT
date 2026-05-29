@@ -1,0 +1,9 @@
+always, cpuclock:333, on
+always, mscache, on
+always, skiplogos, off
+always, hidepics, off
+always, hidemac, on
+always, noled, off
+always, noumd, off
+always, noanalog, off
+always, vitamute, on

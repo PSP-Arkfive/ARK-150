@@ -5,13 +5,19 @@
 #include <pspidstorage.h>
 #include <pspdisplay_kernel.h>
 
-#include <systemctrl.h>
 #include <cfwmacros.h>
+#include <systemctrl.h>
+#include <systemctrl_se.h>
 #include <systemctrl_ark.h>
 
 #include "main.h"
 #include "modulemanager.h"
 #include "loadexec.h"
+#include "controller.h"
+
+
+extern ARKConfig* ark_config;
+extern SEConfigARK150 se_config;
 
 void sceDisplaySetBrightnessPatched(int level, int unk1);
 int SysEventHandler(int eventId, char *eventName, void *param, int *result);
@@ -19,8 +25,6 @@ int SysEventHandler(int eventId, char *eventName, void *param, int *result);
 int last_br;
 int last_unk;
 int (* GetMsSize)(void);
-
-extern void* custom_rebootex;
 
 // Previous Module Start Handler
 STMOD_HANDLER previous = NULL;
@@ -131,6 +135,10 @@ int sceSysconWriteScratchPadPatched(int dest, void *src, int size)
 // Module Start Handler
 static int ARKSyspatchOnModuleStart(SceModule * mod)
 {
+
+    // System fully booted Status
+    static int booted = 0;
+
     char *moduleName = mod->modname;
     u32 text_addr = mod->text_addr;
 
@@ -171,6 +179,43 @@ static int ARKSyspatchOnModuleStart(SceModule * mod)
     {
         patchLoadExec();
         sctrlFlushCache();
+    }
+    else if (strcmp(mod->modname, "sceController_Service") == 0){
+        // Allow exiting through key combo
+        patchController(mod);
+        sctrlFlushCache();
+    }
+
+    // Boot Complete Action not done yet
+    if (booted == 0)
+    {
+        // Boot is complete
+        if (sctrlHENIsSystemBooted())
+        {
+
+            // handle mscache
+            if (se_config.msspeed){
+                //sctrlMsCacheInit("msstor0p", MSCACHE_BUFSIZE_MIN);
+            }
+
+            // handle CPU speed settings
+            switch (se_config.cpubus_clock){
+                case CPU_BUS_CLOCK_333:    sctrlHENSetSpeed(333, 166); break;
+                case CPU_BUS_CLOCK_222:    sctrlHENSetSpeed(222, 111); break;
+                case CPU_BUS_CLOCK_133:    sctrlHENSetSpeed(133, 66);  break;
+                case CPU_BUS_CLOCK_CUSTOM:
+                    sctrlHENSetSpeed(
+                        se_config.custom_cpu_clock,
+                        se_config.custom_bus_clock
+                    );
+                    break;
+            }
+
+            ark_config->recovery = 0; // reset recovery mode for next reboot
+
+            // Boot Complete Action done
+            booted = 1;
+        }
     }
 
     if (previous) return previous(mod);

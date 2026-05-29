@@ -2,6 +2,7 @@ TARGET = systemctrl150
 
 OBJS = \
 	main.o \
+	src/cpuclock.o \
 	src/flushcache.o \
 	src/hooknids.o \
 	src/loadexec.o \
@@ -15,7 +16,11 @@ OBJS = \
 	src/kubridge.o \
 	src/syspatch.o \
 	src/plugin.o \
+	src/patches.o \
+	src/controller.o \
+	src/threadman.o \
 	src/missingfunc.o \
+#	src/msstor_cache.o \
 
 all: $(TARGET).prx
 INCDIR = include

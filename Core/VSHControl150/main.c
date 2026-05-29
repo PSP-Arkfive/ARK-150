@@ -24,7 +24,7 @@ static STMOD_HANDLER previous;
 extern int _sceCtrlReadBufferPositive(SceCtrlData *ctrl, int count);
 extern int (*g_sceCtrlReadBufferPositive)(SceCtrlData *, int count);
 
-SEConfig* se_config = NULL;
+SEConfigARK150* se_config = NULL;
 
 typedef struct _HookUserFunctions {
     u32 nid;
@@ -170,6 +170,24 @@ static void patch_sysconf_plugin_module(SceModule *mod) {
         // ori v0, v0, addrlow
         _sw(0x34420000 | addrlow, text_addr+0x8730);
     }
+
+    if (se_config->hidemac){
+        u32 top_addr = text_addr+mod->text_size;
+        for (u32 addr=text_addr; addr < top_addr; addr++){
+            if (   ((u8*)addr)[0] == 0x25
+                && ((u8*)addr)[1] == 0
+                && ((u8*)addr)[2] == 0x30
+                && ((u8*)addr)[3] == 0
+                && ((u8*)addr)[4] == 0x32
+                && ((u8*)addr)[5] == 0
+                && ((u8*)addr)[6] == 0x58
+                && ((u8*)addr)[7] == 0 )
+            {
+                _sw(0, addr);
+                break;
+            }
+        }
+    }
 }
 
 static void patch_sceCtrlReadBufferPositive(void)
@@ -208,7 +226,7 @@ static int vshpatch_module_chain(SceModule *mod)
 
 int module_start(SceSize args, void* argp)
 {
-    se_config = sctrlSEGetConfigInternal();
+    se_config = (SEConfigARK150*)sctrlSEGetConfigInternal();
     previous = sctrlHENSetStartModuleHandler(vshpatch_module_chain);
     return 0;
 }

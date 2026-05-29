@@ -97,6 +97,36 @@ u32 sctrlHENFindFunction(const char * szMod, const char * szLib, u32 nid)
     return 0;
 }
 
+/*
+// Find Filesystem Driver
+PspIoDrv * sctrlHENFindDriver(const char * drvname)
+{
+    // Elevate Permission Level
+    unsigned int k1 = pspSdkSetK1(0);
+
+    // Find Function
+    int * (* findDriver)(const char * drvname) = (void*)sctrlHENFindFirstJAL(sctrlHENFindFunction("sceIOFileManager", "IoFileMgrForKernel", 0x76DA16E3));
+
+    // Find Driver Wrapper
+    int * wrapper = findDriver(drvname);
+
+    // Search Result
+    PspIoDrv * driver = NULL;
+
+    // Found Driver Wrapper
+    if(wrapper != NULL)
+    {
+        // Save Driver Pointer
+        driver = (PspIoDrv *)(wrapper[1]);
+    }
+
+    // Restore Permission Level
+    pspSdkSetK1(k1);
+
+    // Return Driver
+    return driver;
+}*/
+
 // Replace Function in Syscall Table
 void sctrlHENPatchSyscall(void * addr, void * newaddr)
 {
@@ -122,4 +152,10 @@ void sctrlHENPatchSyscall(void * addr, void * newaddr)
             syscalls[i] = (unsigned int)newaddr;
         }
     }
+}
+
+int sctrlHENIsSystemBooted() {
+    int (*getSystemStatus)() = (void*)sctrlHENFindFunction("sceSystemMemoryManager", "SysMemForKernel", 0x452E3696);
+	int res = getSystemStatus();
+	return (res == 0x20000);
 }

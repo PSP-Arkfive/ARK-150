@@ -26,7 +26,9 @@
 #include <systemctrl_se.h>
 #include <systemctrl_ark.h>
 
+#include "controller.h"
 #include "plugin.h"
+
 
 extern SEConfigARK150 se_config;
 extern ARKConfig* ark_config;
@@ -72,15 +74,16 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
     }
 
     // load plugins after starting mediasyncs
-    if (!pluginsLoaded && strcmp(modname, "sceImpose_Driver") == 0)
+    if (strcmp(modname, "sceImpose_Driver") == 0)
     {
+        // Check controller input to disable settings and/or plugins
+        checkControllerInput();
+
         // load settings
         loadSettings();
-        settingsLoaded = 1;
 
         // Load Plugins
         loadPlugins();
-        pluginsLoaded = 1;
     }
     
     // start module

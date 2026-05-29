@@ -437,9 +437,6 @@ static void settingsHandler(const char* path, u8 enabled){
     else if (strcasecmp(path, "hidemac") == 0){ // hide mac address
         se_config.hidemac = enabled;
     }
-    else if (strcasecmp(path, "qaflags") == 0){ // QA Flags
-        se_config.qaflags = enabled;
-    }
     else if (strncasecmp(path, "fakeregion_", 11) == 0){
         unsigned long r = strtoul(path+11, NULL, 10);
         se_config.vshregion = (enabled)?r:0;
@@ -471,10 +468,10 @@ static void settingsDisabler(const char* path){
 }
 
 void loadPlugins(){
-    if (disable_plugins)
+    if (disable_plugins || pluginsLoaded)
         return; // don't load plugins in recovery mode
+
     is_plugins_loading = 1;
-    
     // allocate resources
     plugins = oe_malloc(sizeof(Plugins));
     plugins->count = 0; // initialize plugins table
@@ -489,16 +486,20 @@ void loadPlugins(){
     oe_free(plugins);
     plugins = NULL;
     is_plugins_loading = 0;
+
+    pluginsLoaded = 1;
 }
 
 void loadSettings(){
-    if (disable_settings)
+    if (disable_settings || settingsLoaded)
         return; // don't load settings in recovery mode
 
     // process settings file
     char path[ARK_PATH_SIZE];
     strcpy(path, ark_config->arkpath);
-    strcat(path, ARK_SETTINGS);
+    strcat(path, ARK_SETTINGS150);
     if (ProcessConfigFile(NULL, path, settingsEnabler, settingsDisabler) < 0) // try external settings
         ProcessConfigFile(NULL, ARK_SETTINGS150_FLASH, settingsEnabler, settingsDisabler); // retry flash1 settings
+    
+    settingsLoaded = 1;
 }
