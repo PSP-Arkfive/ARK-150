@@ -121,11 +121,11 @@ void loadSettings(){
 
     char path[ARK_PATH_SIZE];
     strcpy(path, ark_config.arkpath);
-    strcat(path, ARK_SETTINGS);
+    strcat(path, ARK_SETTINGS150);
     SceUID check = sceIoOpen(path, PSP_O_RDONLY, 0);
     if(check < 0) {
         memset(path, 0, sizeof(path));
-        strcpy(path, ARK_SETTINGS_FLASH);
+        strcpy(path, ARK_SETTINGS150_FLASH);
     }
     else {
         sceIoClose(check);
@@ -168,10 +168,6 @@ static void saveClockSetting(int output, char* category, int opt){
             case CPU_BUS_CLOCK_133: sceIoWrite(output, "cpuclock:133, on\n", 17); break;
             case CPU_BUS_CLOCK_222: sceIoWrite(output, "cpuclock:222, on\n", 17); break;
             case CPU_BUS_CLOCK_333: sceIoWrite(output, "cpuclock:333, on\n", 17); break;
-            case CPU_BUS_CLOCK_383: sceIoWrite(output, "cpuclock:383, on\n", 17); break;
-            case CPU_BUS_CLOCK_403: sceIoWrite(output, "cpuclock:403, on\n", 17); break;
-            case CPU_BUS_CLOCK_423: sceIoWrite(output, "cpuclock:423, on\n", 17); break;
-            case CPU_BUS_CLOCK_443: sceIoWrite(output, "cpuclock:443, on\n", 17); break;
             default: sceIoWrite(output, "cpuclock:333, off\n", 18); break;
         }
     }

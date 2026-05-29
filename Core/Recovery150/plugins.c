@@ -74,7 +74,7 @@ void loadPlugins(){
     clear_list(&plugins, &plugin_list_cleaner);
 
     cur_place = PLACE_MS0;
-    ProcessConfigFile("ms0:/SEPLUGINS/PLUGINS150.TXT", &processPlugin, &processCustomLine);
+    ProcessConfigFile(PLUGINS150_PATH, &processPlugin, &processCustomLine);
 
     if (plugins.count == 0){
         // Add example plugin
@@ -102,7 +102,7 @@ void savePlugins(){
         }
     }
 
-    SceUID fd = sceIoOpen("ms0:/SEPLUGINS/PLUGINS150.TXT", PSP_O_WRONLY | PSP_O_CREAT | PSP_O_TRUNC, 0777);
+    SceUID fd = sceIoOpen(PLUGINS150_PATH, PSP_O_WRONLY | PSP_O_CREAT | PSP_O_TRUNC, 0777);
 
     for (int i=0; i<plugins.count; i++){
         Plugin* plugin = (Plugin*)(plugins.table[i]);
