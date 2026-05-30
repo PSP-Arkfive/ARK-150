@@ -75,6 +75,7 @@ Setting settings_items[] =
     { 2, &(config.noled), "Turn off LEDs", ark_settings_boolean },
     { 2, &(config.noumd), "Disable UMD Drive", ark_settings_boolean },
     { 2, &(config.noanalog), "Disable Analog Stick", ark_settings_boolean },
+    { 2, &(config.vitamute), "Vita-style mute", ark_settings_boolean },
 };
 #define N_SETTINGS (sizeof(settings_items)/sizeof(settings_items[0]))
 
