@@ -34,9 +34,9 @@ typedef struct {
 
 char* ark_clock_settings[] = {
     (char*)"Auto",
-    (char*)"OverClock",
-    (char*)"Balanced",
-    (char*)"PowerSave"
+    (char*)"133",
+    (char*)"222",
+    (char*)"333"
 };
 
 char* ark_settings_boolean[] = {
@@ -47,12 +47,6 @@ char* ark_settings_boolean[] = {
 char* ark_settings_boolean2[] = {
     (char*)"Auto",
     (char*)"Forced"
-};
-
-char* ark_settings_infernocache[] = {
-    (char*)"Off",
-    (char*)"LRU",
-    (char*)"RR"
 };
 
 char* ark_skiplogos_options[] = {
