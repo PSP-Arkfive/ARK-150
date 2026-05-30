@@ -1,6 +1,7 @@
 PY = $(shell which python3)
 PSPDEV = $(shell psp-config --pspdev-path)
 BUILDTOOLS = $(PSPDEV)/share/psp-cfw-sdk/build-tools
+LANGFOLDER = Extras/Language/Translations/resources
 
 .PHONY: dist Core Language Installers
 
@@ -32,10 +33,10 @@ Core:
 
 
 Language:
-	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py Extras/Language/Translations/resources/satelite_chs_utf8.txt Extras/Language/quan.bdf Extras/Language/Translations/resources/satelite_chs.txt Extras/Language/Translations/resources/CHS.pf
-	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py Extras/Language/Translations/resources/satelite_cht_utf8.txt Extras/Language/quan.bdf Extras/Language/Translations/resources/satelite_cht.txt Extras/Language/Translations/resources/CHT.pf
-	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py Extras/Language/Translations/resources/satelite_jp_utf8.txt Extras/Language/quan.bdf Extras/Language/Translations/resources/satelite_jp.txt Extras/Language/Translations/resources/JP.pf
-	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py Extras/Language/Translations/resources/satelite_kr_utf8.txt Extras/Language/quan.bdf Extras/Language/Translations/resources/satelite_kr.txt Extras/Language/Translations/resources/KR.pf
+	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py $(LANGFOLDER)/satelite_chs_utf8.txt Extras/Language/quan.bdf $(LANGFOLDER)/satelite_chs.txt $(LANGFOLDER)/CHS.pf
+	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py $(LANGFOLDER)/satelite_cht_utf8.txt Extras/Language/quan.bdf $(LANGFOLDER)/satelite_cht.txt $(LANGFOLDER)/CHT.pf
+	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py $(LANGFOLDER)/satelite_jp_utf8.txt Extras/Language/quan.bdf $(LANGFOLDER)/satelite_jp.txt $(LANGFOLDER)/JP.pf
+	$(Q)$(PY) $(BUILDTOOLS)/pftools/bdf_to_pf.py $(LANGFOLDER)/satelite_kr_utf8.txt Extras/Language/quan.bdf $(LANGFOLDER)/satelite_kr.txt $(LANGFOLDER)/KR.pf
 	$(Q)$(PY) $(BUILDTOOLS)/pack/pkg-res.py Extras/Language LANG150.ARK
 	$(Q)mv Extras/Language/Translations/LANG150.ARK dist/
 
