@@ -468,7 +468,7 @@ static void settingsDisabler(const char* path){
 }
 
 void loadPlugins(){
-    if (disable_plugins || pluginsLoaded)
+    if (ark_config->recovery || disable_plugins || pluginsLoaded)
         return; // don't load plugins in recovery mode
 
     is_plugins_loading = 1;
@@ -491,7 +491,7 @@ void loadPlugins(){
 }
 
 void loadSettings(){
-    if (disable_settings || settingsLoaded)
+    if (ark_config->recovery || disable_settings || settingsLoaded)
         return; // don't load settings in recovery mode
 
     // process settings file

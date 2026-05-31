@@ -68,9 +68,9 @@ Setting settings_items[] =
 {
     { 4, &(config.clock_game), "CPU Clock in Game", ark_clock_settings },
     { 4, &(config.clock_vsh), "CPU Clock in XMB", ark_clock_settings },
-    { 2, &(config.mscache), "Memory Stick Speedup", ark_settings_boolean },
-    { 4, &(config.skiplogos), "Skip Sony Logos", ark_skiplogos_options },
-    { 4, &(config.hidepics), "Hide PIC0 and PIC1", ark_hidepics_options },
+    //{ 2, &(config.mscache), "Memory Stick Speedup", ark_settings_boolean },
+    //{ 4, &(config.skiplogos), "Skip Sony Logos", ark_skiplogos_options },
+    //{ 4, &(config.hidepics), "Hide PIC0 and PIC1", ark_hidepics_options },
     { 2, &(config.hidemac), "Hide MAC Address", ark_settings_boolean },
     { 2, &(config.noled), "Turn off LEDs", ark_settings_boolean },
     { 2, &(config.noumd), "Disable UMD Drive", ark_settings_boolean },

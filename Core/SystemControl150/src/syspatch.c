@@ -1,6 +1,7 @@
 #include <string.h>
 #include <pspkernel.h>
 #include <pspreg.h>
+#include <pspumd.h>
 #include <pspsysevent.h>
 #include <pspidstorage.h>
 #include <pspdisplay_kernel.h>
@@ -132,6 +133,47 @@ int sceSysconWriteScratchPadPatched(int dest, void *src, int size)
     return _sceSysconWriteScratchPad(dest, src, size);
 }
 
+int (*_sceSysconCtrlLEDOrig)(int, int);
+void disableLEDs(){
+    int (*_sceSysconCtrlLED)(int, int);
+    _sceSysconCtrlLED = (void*)sctrlHENFindFunction("sceSYSCON_Driver", "sceSyscon_driver", 0x18BFBE65);
+    for (int i=0; i<4; i++) _sceSysconCtrlLED(i, 0);
+    static u32 dummy[2] = {JR_RA, LI_V0(0)};
+    HIJACK_FUNCTION(_sceSysconCtrlLED, dummy, _sceSysconCtrlLEDOrig);
+    sctrlFlushCache();
+}
+
+static int sceGpioPortReadPatched(void) {
+    int GPRValue = *((int *) 0xBE240004);
+    GPRValue = GPRValue & 0xFBFFFFFF;
+    return GPRValue;
+}
+
+int sceUmdRegisterUMDCallBackPatched(int cbid) {
+    int k1 = pspSdkSetK1(0);
+    int res = sceKernelNotifyCallback(cbid, PSP_UMD_NOT_PRESENT);
+    pspSdkSetK1(k1);
+    return res;
+}
+
+void disableUMD(){
+    // redirect UMD callback to DISC_NOT_PRESENT
+    u32 f = sctrlHENFindFunction("sceUmd_driver", "sceUmdUser", 0xAEE7404D);
+    if (f){
+        REDIRECT_FUNCTION(f, sceUmdRegisterUMDCallBackPatched);
+    }
+    // remove umd driver
+    sceIoDelDrv("umd");
+    // force UMD check medium to always return 0 (no medium)
+    u32 CheckMedium = sctrlHENFindFunction("sceUmd_driver", "sceUmdUser", 0x46EBB729);
+    if (CheckMedium){
+        MAKE_DUMMY_FUNCTION_RETURN_0(CheckMedium);
+    }
+    // patch GPIO to disable UMD drive electrically
+    u32 sceGpioPortRead = sctrlHENFindFunction("sceGPIO_Driver", "sceGpio_driver", 0x4250D44A);
+    REDIRECT_FUNCTION(sceGpioPortRead, sceGpioPortReadPatched);
+}
+
 // Module Start Handler
 static int ARKSyspatchOnModuleStart(SceModule * mod)
 {
@@ -211,6 +253,14 @@ static int ARKSyspatchOnModuleStart(SceModule * mod)
                     break;
             }
 
+            if (se_config.noled){
+                disableLEDs();
+            }
+
+            if (se_config.noumd){
+                disableUMD();
+            }
+
             ark_config->recovery = 0; // reset recovery mode for next reboot
 
             // Boot Complete Action done
@@ -236,6 +286,12 @@ int SysEventHandler(int eventId, char *eventName, void *param, int *result)
     {
         if (last_br == 100)
         	sceDisplaySetBrightnessPatched(last_br, last_unk);
+    }
+    else if (eventId == 0x400000) { // resume complete
+        // disable LEDs
+        if (se_config.noled && _sceSysconCtrlLEDOrig){
+            for (int i=0; i<4; i++) _sceSysconCtrlLEDOrig(i, 0);
+        }
     }
 
     return 0;

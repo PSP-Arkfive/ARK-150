@@ -13,6 +13,7 @@
 #include "plugin.h"
 
 // Exit Button Mask
+#define EXIT_MASK_RECOVERY (PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_START | PSP_CTRL_DOWN)
 #define EXIT_MASK_VSH (PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_SELECT | PSP_CTRL_DOWN)
 #define MUTE_MASK (PSP_CTRL_VOLUP | PSP_CTRL_VOLDOWN)
 
@@ -34,9 +35,6 @@ static int exitVsh(){
 
     int (*setHoldMode)(int) = (void*)sctrlHENFindFunction("sceDisplay_Service", "sceDisplay", 0x7ED59BC4);
     if (setHoldMode) setHoldMode(0);
-
-    // reset some flags
-    ark_config->recovery = 0;
 
     int res = sctrlKernelExitVSH(NULL);
 
@@ -74,10 +72,21 @@ int peek_positive(SceCtrlData * pad_data, int count)
 {
     // Capture Gamepad Input
     count = CtrlPeekBufferPositive(pad_data, count);
+
+    // Check for Exit Mask
+    if ((pad_data[0].Buttons & EXIT_MASK_RECOVERY) == EXIT_MASK_RECOVERY)
+    {
+        // reset some flags
+        ark_config->recovery = 1;
+        startExitThread(exitVsh);
+    }
+
     
     // Check for Exit Mask
     if ((pad_data[0].Buttons & EXIT_MASK_VSH) == EXIT_MASK_VSH)
     {
+        // reset some flags
+        ark_config->recovery = 0;
         startExitThread(exitVsh);
     }
 
@@ -103,10 +112,19 @@ int peek_negative(SceCtrlData * pad_data, int count)
     // Capture Gamepad Input
     count = CtrlPeekBufferNegative(pad_data, count);
     
+    // Check for Exit Mask
+    if((pad_data[0].Buttons & EXIT_MASK_RECOVERY) == 0)
+    {
+        // reset some flags
+        ark_config->recovery = 1;
+        startExitThread(exitVsh);
+    }
     
     // Check for Exit Mask
     if((pad_data[0].Buttons & EXIT_MASK_VSH) == 0)
     {
+        // reset some flags
+        ark_config->recovery = 0;
         startExitThread(exitVsh);
     }
 
@@ -133,8 +151,18 @@ int read_positive(SceCtrlData * pad_data, int count)
     count = CtrlReadBufferPositive(pad_data, count);
 
     // Check for Exit Mask
+    if((pad_data[0].Buttons & EXIT_MASK_RECOVERY) == EXIT_MASK_RECOVERY)
+    {
+        // reset some flags
+        ark_config->recovery = 1;
+        startExitThread(exitVsh);
+    }
+
+    // Check for Exit Mask
     if((pad_data[0].Buttons & EXIT_MASK_VSH) == EXIT_MASK_VSH)
     {
+        // reset some flags
+        ark_config->recovery = 0;
         startExitThread(exitVsh);
     }
 
@@ -161,8 +189,18 @@ int read_negative(SceCtrlData * pad_data, int count)
     count = CtrlReadBufferNegative(pad_data, count);
 
     // Check for Exit Mask
+    if((pad_data[0].Buttons & EXIT_MASK_RECOVERY) == 0)
+    {
+        // reset some flags
+        ark_config->recovery = 1;
+        startExitThread(exitVsh);
+    }
+
+    // Check for Exit Mask
     if((pad_data[0].Buttons & EXIT_MASK_VSH) == 0)
     {
+        // reset some flags
+        ark_config->recovery = 0;
         startExitThread(exitVsh);
     }
 

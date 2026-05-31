@@ -89,7 +89,7 @@ void restoreRebootBuffer(void)
     memcpy((void *)REBOOTEX_CONFIG, &rebootex_config, sizeof(RebootexConfigARK));
 
     // Restore ARK Configuration
-    memcpy((void *)ARK_CONFIG, ark_config, sizeof(ARKConfig));
+    memcpy((void *)ARK_CONFIG_150, ark_config, sizeof(ARKConfig));
 }
 
 // Reboot Buffer Loader

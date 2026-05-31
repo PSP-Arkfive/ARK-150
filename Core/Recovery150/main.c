@@ -81,42 +81,11 @@ void suspend_vsh_thread(void)
     suspend_thread("music_player");
 }
 
-static char* findRecoveryApp(){
-    const char *p = "ms0:/PSP/GAME/RECOVERY/EBOOT.PBP";
-    SceIoStat stat;
-    if (sceIoGetstat(p, &stat) < 0){
-        p = "ef0:/PSP/GAME/RECOVERY/EBOOT.PBP";
-        if (sceIoGetstat(p, &stat) < 0) return NULL;
-    }
-    return p;
-}
-
-static int launchRecoveryApp(char* p){
-    struct SceKernelLoadExecVSHParam param;
-
-    int apitype = 0x141;
-
-    memset(&param, 0, sizeof(param));
-    param.size = sizeof(param);
-    param.args = strlen(p) + 1;
-    param.argp = p;
-    param.key = "game";
-    sctrlKernelLoadExecVSHWithApitype(apitype, p, &param);
-
-    // SHOULD NOT REALLY GET HERE
-    return 0;
-}
-
 static int selected_choice(u32 choice) {
-    int ret;
-
     switch (choice){
-
     case 0:
-        pspDebugScreenSetXY(25, 30);
-        printf("Good-bye ;-)");
-        sceKernelDelayThread(100000);
-        return 0;
+        proshell_main();
+        return 1;
     case 1:
         loadSettings();
         settings_submenu();
@@ -128,23 +97,12 @@ static int selected_choice(u32 choice) {
         savePlugins();
         return 1;
     case 3:
-        proshell_main();
-        return 1;
-    case 4:
-        {
-            char* p = findRecoveryApp();
-            pspDebugScreenSetXY(20, 30);
-            if (p) printf("Booting %s", p);
-            else printf("Not found :(");
-            sceKernelDelayThread(2000000);
-            if (p){
-                launchRecoveryApp(p);
-                return 0;
-            }
-            return 1;
-        }
+        pspDebugScreenSetXY(25, 30);
+        printf("Good-bye ;-)");
+        sceKernelDelayThread(100000);
+        return 0;
     }
-
+    return 1;
 }
 
 static void draw(char** options, int size, int dir){
@@ -200,11 +158,10 @@ int main(SceSize args, void *argp) {
 
     SceCtrlData pad;
     char *options[] = {
-        "Exit",
+        "PRO Shell",
         "Custom Firmware Settings",
         "Plugins Manager",
-        "PRO Shell",
-        "Run /PSP/GAME/RECOVERY/EBOOT.PBP"
+        "Exit",
     };
 
     int size = (sizeof(options) / sizeof(options[0]))-1;
