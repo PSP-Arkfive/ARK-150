@@ -97,7 +97,6 @@ u32 sctrlHENFindFunction(const char * szMod, const char * szLib, u32 nid)
     return 0;
 }
 
-/*
 // Find Filesystem Driver
 PspIoDrv * sctrlHENFindDriver(const char * drvname)
 {
@@ -105,7 +104,7 @@ PspIoDrv * sctrlHENFindDriver(const char * drvname)
     unsigned int k1 = pspSdkSetK1(0);
 
     // Find Function
-    int * (* findDriver)(const char * drvname) = (void*)sctrlHENFindFirstJAL(sctrlHENFindFunction("sceIOFileManager", "IoFileMgrForKernel", 0x76DA16E3));
+    int * (* findDriver)(const char * drvname) = (void*)sctrlHENFindFirstJAL(sctrlHENFindFunction("sceIOFileManager", "IoFileMgrForKernel", 0x8E982A74));
 
     // Find Driver Wrapper
     int * wrapper = findDriver(drvname);
@@ -125,7 +124,7 @@ PspIoDrv * sctrlHENFindDriver(const char * drvname)
 
     // Return Driver
     return driver;
-}*/
+}
 
 // Replace Function in Syscall Table
 void sctrlHENPatchSyscall(void * addr, void * newaddr)

@@ -237,7 +237,7 @@ static int ARKSyspatchOnModuleStart(SceModule * mod)
 
             // handle mscache
             if (se_config.msspeed){
-                //sctrlMsCacheInit("msstor0p", MSCACHE_BUFSIZE_MIN);
+                sctrlMsCacheInit("msstor0p", MSCACHE_BUFSIZE_MIN);
             }
 
             // handle CPU speed settings

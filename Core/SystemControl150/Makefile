@@ -20,7 +20,7 @@ OBJS = \
 	src/controller.o \
 	src/threadman.o \
 	src/missingfunc.o \
-#	src/msstor_cache.o \
+	src/msstor_cache.o \
 
 all: $(TARGET).prx
 INCDIR = include
