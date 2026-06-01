@@ -234,11 +234,10 @@ static int ARKSyspatchOnModuleStart(SceModule * mod)
         // Boot is complete
         if (sctrlHENIsSystemBooted())
         {
-
-            // handle mscache
-            if (se_config.msspeed){
-                sctrlMsCacheInit("msstor0p", MSCACHE_BUFSIZE_MIN);
-            }
+            // handle settings
+            if (se_config.msspeed) sctrlMsCacheInit("msstor0p", MSCACHE_BUFSIZE_MIN);
+            if (se_config.noled) disableLEDs();
+            if (se_config.noumd) disableUMD();
 
             // handle CPU speed settings
             switch (se_config.cpubus_clock){
@@ -251,14 +250,6 @@ static int ARKSyspatchOnModuleStart(SceModule * mod)
                         se_config.custom_bus_clock
                     );
                     break;
-            }
-
-            if (se_config.noled){
-                disableLEDs();
-            }
-
-            if (se_config.noumd){
-                disableUMD();
             }
 
             ark_config->recovery = 0; // reset recovery mode for next reboot

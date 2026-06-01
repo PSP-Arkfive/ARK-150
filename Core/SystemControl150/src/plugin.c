@@ -389,17 +389,17 @@ static int ProcessConfigFile(
 }
 
 static void settingsHandler(const char* path, u8 enabled){
-    if (strcasecmp(path, "cpuclock:333") == 0 || strcasecmp(path, "overclock") == 0){ // set CPU speed to max
+    if (strcasecmp(path, "cpuclock:333") == 0){ // set CPU speed to max
         if (enabled)
             se_config.cpubus_clock = CPU_BUS_CLOCK_333;
         else if (se_config.cpubus_clock == CPU_BUS_CLOCK_333) se_config.cpubus_clock = 0;
     }
-    else if (strcasecmp(path, "cpuclock:133") == 0 || strcasecmp(path, "powersave") == 0){ // underclock to save battery
+    else if (strcasecmp(path, "cpuclock:133") == 0){ // underclock to save battery
         if (enabled)
             se_config.cpubus_clock = CPU_BUS_CLOCK_133;
         else if (se_config.cpubus_clock == CPU_BUS_CLOCK_133) se_config.cpubus_clock = 0;
     }
-    else if (strcasecmp(path, "cpuclock:222") == 0 || strcasecmp(path, "defaultclock") == 0){
+    else if (strcasecmp(path, "cpuclock:222") == 0 ){
         if (enabled)
             se_config.cpubus_clock = CPU_BUS_CLOCK_222;
         else if (se_config.cpubus_clock == CPU_BUS_CLOCK_222) se_config.cpubus_clock = 0;
@@ -436,26 +436,6 @@ static void settingsHandler(const char* path, u8 enabled){
     }
     else if (strcasecmp(path, "hidemac") == 0){ // hide mac address
         se_config.hidemac = enabled;
-    }
-    else if (strncasecmp(path, "fakeregion_", 11) == 0){
-        unsigned long r = strtoul(path+11, NULL, 10);
-        se_config.vshregion = (enabled)?r:0;
-    }
-    else if (strncasecmp(path, "skiplogos", 9) == 0){
-        char* c = strchr(path, ':');
-        se_config.skiplogos = enabled;
-        if (enabled && c){
-            if (strcasecmp(c+1, "gameboot") == 0) se_config.skiplogos = 2;
-            else if (strcasecmp(c+1, "coldboot") == 0) se_config.skiplogos = 3;
-        }
-    }
-    else if (strncasecmp(path, "hidepics", 8) == 0){ // hide PIC0 and PIC1
-        char* c = strchr(path, ':');
-        se_config.hidepics = enabled;
-        if (enabled && c){
-            if (strcasecmp(c+1, "pic0") == 0) se_config.hidepics = 2;
-            else if (strcasecmp(c+1, "pic1") == 0) se_config.hidepics = 3;
-        }
     }
 }
 

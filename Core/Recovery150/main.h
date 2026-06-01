@@ -30,8 +30,6 @@ typedef struct
     int clock_game;
     int clock_vsh;
     int mscache;
-    int skiplogos;
-    int hidepics;
     int hidemac;
     int noled;
     int noumd;

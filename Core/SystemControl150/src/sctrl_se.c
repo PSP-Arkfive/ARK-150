@@ -34,7 +34,6 @@
 
 SEConfigARK150 se_config = {
     .magic = ARK_CONFIG_MAGIC,
-    .qaflags = 1,
     .msspeed = 1,
     .vitamute = 1,
 };

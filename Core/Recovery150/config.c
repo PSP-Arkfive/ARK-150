@@ -43,40 +43,20 @@ static int processConfigLine(char* runlevel, char* path, char* enabled){
 
     if (opt == CUSTOM) return 0;
 
-    if (strcasecmp(path, "cpuclock:333") == 0 || strcasecmp(path, "overclock") == 0){
+    if (strcasecmp(path, "cpuclock:333") == 0){
         convertClockConfig(opt, CPU_BUS_CLOCK_333);
         return 1;
     }
-    else if (strcasecmp(path, "cpuclock:222") == 0 || strcasecmp(path, "defaultclock") == 0){
+    else if (strcasecmp(path, "cpuclock:222") == 0){
         convertClockConfig(opt, CPU_BUS_CLOCK_222);
         return 1;
     }
-    else if (strcasecmp(path, "cpuclock:133") == 0 || strcasecmp(path, "powersave") == 0){
+    else if (strcasecmp(path, "cpuclock:133") == 0){
         convertClockConfig(opt, CPU_BUS_CLOCK_133);
         return 1;
     }
     else if (strcasecmp(path, "mscache") == 0){
         config.mscache = opt;
-        return 1;
-    }
-    else if (strncasecmp(path, "skiplogos", 9) == 0){
-        char* c = strchr(path, ':');
-        FIX_BOOLEAN(opt);
-        config.skiplogos = opt;
-        if (opt && c){
-            if (strcasecmp(c+1, "gameboot") == 0) config.skiplogos = 2;
-            else if (strcasecmp(c+1, "coldboot") == 0) config.skiplogos = 3;
-        }
-        return 1;
-    }
-    else if (strncasecmp(path, "hidepics", 8) == 0){
-        char* c = strchr(path, ':');
-        FIX_BOOLEAN(opt);
-        config.hidepics = opt;
-        if (opt && c){
-            if (strcasecmp(c+1, "pic0") == 0) config.hidepics = 2;
-            else if (strcasecmp(c+1, "pic1") == 0) config.hidepics = 3;
-        }
         return 1;
     }
     else if (strcasecmp(path, "hidemac") == 0){
@@ -200,18 +180,6 @@ void saveSettings(){
         saveClockSetting(fd, "vsh", config.clock_vsh);
     }
     processSetting(fd, line, "mscache", config.mscache);
-    switch (config.skiplogos){
-        case 0: processSetting(fd, line, "skiplogos", 0); break;
-        case 1: processSetting(fd, line, "skiplogos", 1); break;
-        case 2: processSetting(fd, line, "skiplogos:gameboot", 1); break;
-        case 3: processSetting(fd, line, "skiplogos:coldboot", 1); break;
-    }
-    switch (config.hidepics){
-        case 0: processSetting(fd, line, "hidepics", 0); break;
-        case 1: processSetting(fd, line, "hidepics", 1); break;
-        case 2: processSetting(fd, line, "hidepics:pic0", 1); break;
-        case 3: processSetting(fd, line, "hidepics:pic1", 1); break;
-    }
     processSetting(fd, line, "hidemac", config.hidemac);
     processSetting(fd, line, "noled", config.noled);
     processSetting(fd, line, "noumd", config.noumd);
