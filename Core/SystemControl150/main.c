@@ -39,8 +39,10 @@ static ARKConfig _ark_conf = {
     .exec_mode = PSP_ORIG,
     .recovery = 0,
 };
+static ARKConfig _ark_conf660;
 
 ARKConfig* ark_config = &_ark_conf;
+ARKConfig* ark_config660 = &_ark_conf660;
 
 
 // Boot Time Entry Point

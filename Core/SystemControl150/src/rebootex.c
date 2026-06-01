@@ -29,6 +29,7 @@ extern int sceKernelMemset(void *buf, int ch, int size);
 
 extern u8 keyseed[0x20];
 extern ARKConfig* ark_config;
+extern ARKConfig* ark_config660;
 
 // Reboot Buffer Backup
 RebootexConfigARK rebootex_config = {
@@ -76,6 +77,9 @@ void backupRebootBuffer(void)
     if (IS_ARK_CONFIG(ARK_CONFIG_150)) {
         memcpy(ark_config, (void*)ARK_CONFIG_150, sizeof(ARKConfig));
     }
+    if (IS_ARK_CONFIG(ARK_CONFIG)) {
+        memcpy(ark_config660, (void*)ARK_CONFIG, sizeof(ARKConfig));
+    }
     
     // Flush Cache
     sctrlFlushCache();
@@ -91,6 +95,7 @@ void restoreRebootBuffer(void)
 
     // Restore ARK Configuration
     memcpy((void *)ARK_CONFIG_150, ark_config, sizeof(ARKConfig));
+    memcpy((void *)ARK_CONFIG, ark_config660, sizeof(ARKConfig));
 }
 
 // Reboot Buffer Loader
@@ -110,7 +115,7 @@ int sceKernelGzipDecompressPatched(u8 *dest, u32 destSize, const u8 *src, void *
 
     if (reboot66x || force_reboot66x)
     {
-        if (strcmp(ark_config->exploit_id, DC_EXPLOIT_ID) == 0) {
+        if (strcmp(ark_config660->exploit_id, DC_EXPLOIT_ID) == 0) {
             sceKernelGzipDecompress((unsigned char *)REBOOTEX_TEXT, REBOOTEX_MAX_SIZE, rebootbuffer_ms_psp, NULL);
         }
         else {
