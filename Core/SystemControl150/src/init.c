@@ -76,6 +76,9 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
         }
     }
 
+    // cleanup
+    if (vshmain_args) oe_free(vshmain_args);
+
     // Custom Handler registered
     if(customStartModule != NULL)
     {
@@ -83,8 +86,11 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
         result = customStartModule(modid, argsize, argp, modstatus, opt);
     }
 
+    // start module
+    if (result < 0) result = sceKernelStartModule(modid, argsize, argp, modstatus, opt);
+
     // load plugins after starting mediasyncs
-    if (strcmp(modname, "sceImpose_Driver") == 0)
+    if (strcmp(modname, "sceMediaSync") == 0)
     {
         // Check controller input to disable settings and/or plugins
         checkControllerInput();
@@ -95,12 +101,6 @@ int InitKernelStartModule(int modid, SceSize argsize, void * argp, int * modstat
         // Load Plugins
         loadPlugins();
     }
-    
-    // start module
-    if (result < 0) result = sceKernelStartModule(modid, argsize, argp, modstatus, opt);
-
-    // cleanup
-    if (vshmain_args) oe_free(vshmain_args);
 
     return result;
 }
