@@ -37,6 +37,7 @@ RebootexConfigARK rebootex_config = {
 };
 
 static int reboot66x = 0;
+int force_reboot66x = 0;
 
 int LoadExecActionPatched(int apitype, void *a1, void *a2, void *a3, void *t0)
 {
@@ -107,7 +108,7 @@ int sceKernelGzipDecompressPatched(u8 *dest, u32 destSize, const u8 *src, void *
     
     restoreRebootBuffer();
 
-    if (reboot66x)
+    if (reboot66x || force_reboot66x)
     {
         if (strcmp(ark_config->exploit_id, DC_EXPLOIT_ID) == 0) {
             sceKernelGzipDecompress((unsigned char *)REBOOTEX_TEXT, REBOOTEX_MAX_SIZE, rebootbuffer_ms_psp, NULL);
@@ -120,7 +121,7 @@ int sceKernelGzipDecompressPatched(u8 *dest, u32 destSize, const u8 *src, void *
 
         // Do the following additional patches when going from 1.50 to 6.61
         _sw(0, 0x886000f0);
-        _sw(0, 0x88600108);    
+        _sw(0, 0x88600108);
 
         return 0;
     }

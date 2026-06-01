@@ -174,6 +174,12 @@ void disableUMD(){
     REDIRECT_FUNCTION(sceGpioPortRead, sceGpioPortReadPatched);
 }
 
+void coldResetPatched(){
+    extern int force_reboot66x;
+    force_reboot66x = 1;
+    sctrlKernelExitVSH(NULL);
+}
+
 // Module Start Handler
 static int ARKSyspatchOnModuleStart(SceModule * mod)
 {
@@ -183,6 +189,8 @@ static int ARKSyspatchOnModuleStart(SceModule * mod)
 
     char *moduleName = mod->modname;
     u32 text_addr = mod->text_addr;
+
+    sctrlHookImportByNID(mod, "scePower", 0x0442D852, coldResetPatched);
 
     if (strcmp(moduleName, "sceRegistry_Service") == 0)
     {
@@ -234,6 +242,7 @@ static int ARKSyspatchOnModuleStart(SceModule * mod)
         // Boot is complete
         if (sctrlHENIsSystemBooted())
         {
+
             // handle settings
             if (se_config.msspeed) sctrlMsCacheInit("msstor0p", MSCACHE_BUFSIZE_MIN);
             if (se_config.noled) disableLEDs();
