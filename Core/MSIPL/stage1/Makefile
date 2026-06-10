@@ -28,11 +28,11 @@ crt0.o : crt0.S
 main.elf: $(C_OBJS)
 
 $(TARGET): main.elf
-	$(Q)$(STRIP) -s $<
-	$(Q)$(OBJCOPY) -O binary $< $(TARGET)
+	$(STRIP) -s $<
+	$(OBJCOPY) -O binary $< $(TARGET)
 	@echo GET $@
 
 clean:
-	$(Q)rm -rf *~ *.s *.o *.elf msipl $(EXTRA_CLEAN)
+	rm -rf *~ *.s *.o *.elf msipl $(EXTRA_CLEAN)
 
 include $(CFWSDK)/build-tools/beauty_bin.mak

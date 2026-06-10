@@ -19,11 +19,11 @@ OBJS = main.o cache.o
 main.elf: $(OBJS)
 
 $(TARGET): main.elf
-	$(Q)$(STRIP) -s $<
-	$(Q)$(OBJCOPY) -O binary $< $(TARGET)
+	$(STRIP) -s $<
+	$(OBJCOPY) -O binary $< $(TARGET)
 	@echo GET $@
 
 clean:
-	$(Q)rm -rf *~ *.s *.o *.elf $(TARGET) $(EXTRA_CLEAN)
+	rm -rf *~ *.s *.o *.elf $(TARGET) $(EXTRA_CLEAN)
 
 include $(CFWSDK)/build-tools/beauty_bin.mak

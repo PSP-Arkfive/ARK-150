@@ -10,7 +10,7 @@ OBJS = \
 all: $(TARGET).prx tmctrl.h
 
 tmctrl.h: $(TARGET).prx
-	$(Q)bin2c $(TARGET).prx tmctrl.h tmctrl
+	bin2c $(TARGET).prx tmctrl.h tmctrl
 
 INCDIR = $(CFWSDK)/include
 CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic -fshort-wchar
@@ -32,4 +32,4 @@ PSP_FW_VERSION = 150
 include $(PSPSDK)/lib/build.mak
 
 clean:
-	$(Q)rm -rf *.o *.elf *.prx *.bin tmctrl.h
+	rm -rf *.o *.elf *.prx *.bin tmctrl.h

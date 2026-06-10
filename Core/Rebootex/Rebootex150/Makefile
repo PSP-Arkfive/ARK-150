@@ -32,12 +32,12 @@ $(REBOOT_OBJS) : %.o : $(REBOOTEXDIR)/%.c
 main.elf: crt0.o $(REBOOT_OBJS) $(OBJS)
 
 $(TARGET): main.elf
-	$(Q)$(STRIP) -s $<
-	$(Q)$(OBJCOPY) -O binary $< $(TARGET)
-	$(Q)bin2c $@ rebootex150.h rebootex150
+	$(STRIP) -s $<
+	$(OBJCOPY) -O binary $< $(TARGET)
+	bin2c $@ rebootex150.h rebootex150
 	@echo GET $@
 
 clean:
-	$(Q)rm -rf *~ *.s *.o *.elf rebootex150.bin rebootex150.h $(EXTRA_CLEAN)
+	rm -rf *~ *.s *.o *.elf rebootex150.bin rebootex150.h $(EXTRA_CLEAN)
 
 include $(CFWSDK)/build-tools/beauty_bin.mak
