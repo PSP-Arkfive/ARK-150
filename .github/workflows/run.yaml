@@ -27,6 +27,11 @@ jobs:
           make
           make install
 
+      - name: ya2d via psp-pacman
+        run:
+          psp-pacman -Syyu --noconfirm
+          psp-pacman -S ya2d --noconfirm
+
       - name: Checkout
         uses: actions/checkout@v4 
         with:
