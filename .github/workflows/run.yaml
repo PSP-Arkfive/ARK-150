@@ -54,14 +54,14 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: ark-release
+          name: ark-150-release
           path: ARK-150.zip
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ark-150-release
           path: .
