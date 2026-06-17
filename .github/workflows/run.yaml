@@ -1,0 +1,75 @@
+name: ARK-150
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: pspdev/pspdev
+    steps:
+      - name: Dependencies
+        run: |
+          apk add clang automake autoconf zlib-dev python3 zip curl unzip sudo
+
+      - name: Cloning and Building lastest pspsdk
+        run: | 
+          git clone https://github.com/pspdev/pspsdk
+
+      - name: Bootstrap sdk and build
+        working-directory: pspsdk
+        run: |
+          bash ./bootstrap
+          ./configure
+          make
+          make install
+
+      - name: Checkout
+        uses: actions/checkout@v4 
+        with:
+          submodules: recursive
+
+      - name: Update psp-cfw-sdk
+        run: curl -OJL "https://github.com/pspdev/psp-cfw-sdk/releases/download/latest/psp-cfw-sdk.zip"
+      
+      - name: Extract psp-cfw-sdk
+        run: sudo unzip -o psp-cfw-sdk.zip -d /
+
+      - name: Build
+        run:  make clean && make 
+
+      - name: Compress
+        run: |
+          cd dist
+          zip -r ../ARK-150.zip .
+      
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ark-release
+          path: ARK-150.zip
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ark-150-release
+          path: .
+      - name:
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: latest
+          name: ARK-150 pre-release
+          prerelease: true
+          files: ARK-150.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    
+
