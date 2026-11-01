@@ -44,6 +44,7 @@ const char *g_messages_en[] = {
     "Pandora -> Normal",
     "VSH MENU",
     "ADVANCED VSH MENU",
+    "RECOVERY MENU ->",
     "SHUTDOWN DEVICE",
     "SUSPEND DEVICE",
     "RESET DEVICE",

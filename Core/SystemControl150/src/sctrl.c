@@ -16,6 +16,10 @@ ARKConfig* sctrlArkGetConfig(ARKConfig* conf){
     return ark_config;
 }
 
+void sctrlArkSetConfig(ARKConfig* conf){
+	if (conf && ark_config) memcpy(ark_config, conf, sizeof(ARKConfig));
+}
+
 void sctrlHENHijackFunction(SctrlFunctionPatchData* patch_data, void* func_addr, void* patch_func, void** orig_func) {
 
     void* ptr = patch_data;

@@ -56,6 +56,7 @@
 #include "menu.h"
 #include "advanced.h"
 #include "registry.h"
+#include "launcher.h"
 
 
 /* Define the module info section */
@@ -136,6 +137,9 @@ resume:
         case 5:
         	scePowerRequestSuspend();
         	break;
+        case 8:
+            exec_recovery_menu(vsh);
+            break;
         case 15:
         	// AVSHMENU START
         	while(vsh->status.sub_stop_flag == 0) {
