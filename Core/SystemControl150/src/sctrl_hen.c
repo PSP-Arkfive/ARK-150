@@ -30,14 +30,6 @@ int sctrlKernelExitVSH(struct SceKernelLoadExecVSHParam *param)
     return ret;
 }
 
-
-extern void* custom_rebootex;
-void sctrlHENSetRebootexOverride(const u8 *rebootex)
-{
-    if (rebootex != NULL) // override rebootex
-        custom_rebootex = rebootex;
-}
-
 extern int (* LoadRebootOverrideHandler)(void * arg1, unsigned int arg2, void * arg3, unsigned int arg4);
 void sctrlHENSetLoadRebootOverrideHandler(int (* func)(void * arg1, unsigned int arg2, void * arg3, unsigned int arg4))
 {

@@ -16,8 +16,6 @@
 REBOOT150_BUFFER
 REBOOT661_BUFFER
 
-// custom rebootex
-void* custom_rebootex = NULL;
 
 // LoadReboot handler
 int (* LoadRebootOverrideHandler)(void * arg1, unsigned int arg2, void * arg3, unsigned int arg4) = NULL;
