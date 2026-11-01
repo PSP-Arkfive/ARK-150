@@ -33,7 +33,7 @@ jobs:
           psp-pacman -S ya2d --noconfirm
 
       - name: Checkout
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -52,7 +52,7 @@ jobs:
           zip -r ../ARK-150.zip .
       
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ark-150-release
           path: ARK-150.zip
