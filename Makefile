@@ -10,7 +10,6 @@ LANGFOLDER = Extras/Language/Translations/resources
 all: dist Core Language Installers
 	$(PY) $(BUILDTOOLS)/pack/pack.py -p dist/FLASH150.ARK flash150.txt -s
 	cp Extras/660Addon/EBOOT.PBP dist/ARK150on660/
-	cp Extras/660Addon/Resources/LIBS/* dist/ARK150on660/
 	cp dist/FLASH150.ARK dist/ARK150on660/
 	cp dist/LANG150.ARK dist/ARK150on660/
 	echo "Done!"
