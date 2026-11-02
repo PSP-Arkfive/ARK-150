@@ -324,6 +324,8 @@ int proshell_main()
 // Print Out of Bounds Text
 void printoob(char * text, int x, int y, unsigned int color)
 {
+	if(sizeof(text) <= 0)
+		return;
     // Iterate Characters
     int i = 0; for(; i < strlen(text); i++)
     {
@@ -382,6 +384,8 @@ void updateList(int clearindex)
                 
                 // Allocate Memory
                 File * item = (File *)malloc(sizeof(File));
+				if(item == NULL)
+					return;
                 
                 // Clear Memory
                 memset(item, 0, sizeof(File));
@@ -947,6 +951,8 @@ int navigate(void)
             }
         }
         
+		if(slash == NULL)
+			return -1;
         // Terminate Working Directory
         slash[0] = 0;
     }
@@ -993,6 +999,8 @@ int paste(void)
     
     // Source and Target Folder are identical
     char * lastslash = NULL; int i = 0; for(; i < strlen(copysource); i++) if(copysource[i] == '/') lastslash = copysource + i;
+	if(lastslash == NULL)
+		return -1;
     char backup = lastslash[1];
     lastslash[1] = 0;
     int identical = strcmp(copysource, cwd) == 0;
@@ -1045,6 +1053,8 @@ int paste(void)
     
     // Allocate Target Path Buffer
     char * copytarget = (char *)malloc(requiredlength);
+	if(copytarget == NULL)
+		return -1;
     
     // Puzzle Target Path
     strcpy(copytarget, cwd);
@@ -1164,6 +1174,8 @@ int delete_folder_recursive(char * path)
                     
                     // Allocate Memory
                     File * item = (File *)malloc(sizeof(File));
+					if(item == NULL)
+						return -1;
                     
                     // Clear Memory
                     memset(item, 0, sizeof(File));
@@ -1211,6 +1223,8 @@ int delete_folder_recursive(char * path)
             
             // Allocate Buffer
             char * buffer = (char *)malloc(size);
+			if(buffer == NULL)
+				return -1;
             
             // Combine Path
             strcpy(buffer, path);
@@ -1233,6 +1247,8 @@ int delete_folder_recursive(char * path)
             
             // Allocate Buffer
             char * buffer = (char *)malloc(size);
+			if(buffer == NULL)
+				return -1;
             
             // Combine Path
             strcpy(buffer, path);
@@ -1363,6 +1379,8 @@ int copy_folder_recursive(char * a, char * b)
                     // Allocate Buffer
                     char * inbuffer = (char *)malloc(insize);
                     char * outbuffer = (char *)malloc(outsize);
+					if(inbuffer == NULL || outbuffer == NULL)
+						return -1;
                     
                     // Puzzle Input Path
                     strcpy(inbuffer, a);

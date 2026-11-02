@@ -9,7 +9,7 @@ OBJS = \
 INCDIR = 
 CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic $(addprefix -I, $(INCDIR))
 
-CFLAGS += -I include -fshort-wchar
+CFLAGS += -I include -fshort-wchar -g
 
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)

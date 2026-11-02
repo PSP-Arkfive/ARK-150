@@ -65,6 +65,8 @@ Setting settings_items[] =
 
 
 static void settings_to_text(char** names, char** states, Setting* settings_items, int size){
+	if(names == NULL || states == NULL || settings_items == NULL || size == NULL)
+		return;
     for(int i = 0; i < size; i++){
         names[i] = settings_items[i].name;
         states[i] = settings_items[i].opts[*(settings_items[i].value)];

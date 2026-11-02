@@ -1,7 +1,7 @@
 TARGET = ARK150on660
 OBJS = main.o installer.o
 
-CFLAGS = -std=c99 -Os -G0 -Wall
+CFLAGS = -std=c99 -Os -G0 -Wall -g
 INCDIR =
 
 LIBS = -lpspminicrt -lya2d -ltinyfont -lpng -lpspgum -lpspgu -lpspvram -lpspmalloc -lpspmath -lz -lpspkubridge -lpsppower -lpspdecrypt -lpsppsar

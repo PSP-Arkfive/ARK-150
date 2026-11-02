@@ -58,7 +58,7 @@ u32 sctrlHENFindFunction(const char * szMod, const char * szLib, u32 nid)
     for (int i = 0; i < pMod->ent_size;)
     {
         // Cast Export Table Entry
-        struct SceLibraryEntryTable * entry = (struct SceLibraryEntryTable *)(entTab + i);
+        struct SceLibraryEntryTable * entry = (struct SceLibraryEntryTable *)((int)entTab + i);
         
         // Found Matching Library
         if(entry->libname != NULL && szLib != NULL && 0 == strcmp(entry->libname, szLib))

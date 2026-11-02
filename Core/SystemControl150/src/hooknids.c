@@ -38,7 +38,7 @@ SceLibraryStubTable * sctrlFindImportLib(SceModule * pMod, const char * library)
     int i = 0; while(i < pMod->stub_size)
     {
         // Cast Import Table
-        SceLibraryStubTable * pImp = (SceLibraryStubTable *)(stubTab + i);
+        SceLibraryStubTable * pImp = (SceLibraryStubTable *)((int)stubTab + i);
         
         // Matching Library discovered
         if(pImp->libname != NULL && strcmp(pImp->libname, library) == 0)

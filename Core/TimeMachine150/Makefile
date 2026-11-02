@@ -13,7 +13,7 @@ tmctrl.h: $(TARGET).prx
 	bin2c $(TARGET).prx tmctrl.h tmctrl
 
 INCDIR = $(CFWSDK)/include
-CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic -fshort-wchar
+CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic -fshort-wchar -g
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 

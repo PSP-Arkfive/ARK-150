@@ -9,7 +9,7 @@ CFLAGS = -std=c99 -Os -G0 -Wall
 INCDIR = 
 LIBDIR = 
 
-LIBS = -lansic -lpspmalloc -lpspsystemctrl_user -lpspvshctrl -lpspkubridge -larkctrl -lpspusb -lpspusbdevice_driver
+LIBS = -lansic -lpspmalloc -lpspsystemctrl_user -lpspvshctrl -lpspkubridge -larkctrl -lpspusb -lpspusbdevice_driver -g
 
 CXXFLAGS = $(CFLAGS)
 ASFLAGS = $(CFLAGS)

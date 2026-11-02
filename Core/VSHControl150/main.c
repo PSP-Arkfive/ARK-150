@@ -220,7 +220,11 @@ static int vshpatch_module_chain(SceModule *mod)
 
   exit:
     sync_cache();
-    if (previous) previous(mod);
+    if (previous) {
+		previous(mod);
+		return 0;
+	}
+	return 0;
 }
 
 

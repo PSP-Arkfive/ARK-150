@@ -160,6 +160,8 @@ void ProcessConfigFile(char* path, int (process_line)(char*, char*, char*), void
             {
                 total_read += nread;
                 char* dupline = malloc(strlen(line)+1);
+				if(dupline == NULL)
+					return;
                 strcpy(dupline, line);
                 // Process Line
                 if (processLine(strtrim(line), process_line)){

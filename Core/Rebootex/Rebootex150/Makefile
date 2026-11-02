@@ -10,7 +10,7 @@ PYTHON=$(shell which python3)
 
 all: $(TARGET)
 
-CFLAGS = -std=c99 -Wall -Os -G0 -fno-pic $(addprefix -I, $(INCDIR)) -DMS_IPL
+CFLAGS = -std=c99 -Wall -Os -G0 -fno-pic $(addprefix -I, $(INCDIR)) -DMS_IPL -g
 
 CC = psp-gcc
 LD = psp-ld

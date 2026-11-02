@@ -29,6 +29,7 @@ int cur_place = 0;
 void plugin_list_cleaner(void* item){
     if (item == NULL) return;
     Plugin* plugin = (Plugin*)item;
+	if(plugin == NULL) return;
     if (plugin->name) free(plugin->name);
     if (plugin->surname) free(plugin->surname);
     if (plugin->path) free(plugin->path);
@@ -38,6 +39,7 @@ void plugin_list_cleaner(void* item){
 
 static void processCustomLine(char* line){
     Plugin* plugin = (Plugin*)malloc(sizeof(Plugin));
+	if(plugin == NULL) return;
     memset(plugin, 0, sizeof(Plugin));
     plugin->path = line;
     plugin->place = cur_place;
@@ -48,6 +50,7 @@ static int processPlugin(char* runlevel, char* path, char* enabled){
     
     int n = plugins.count;
     Plugin* plugin = (Plugin*)malloc(sizeof(Plugin));
+	if(plugin == NULL) return -1;
     memset(plugin, 0, sizeof(Plugin));
 
     plugin->name = malloc(20);
@@ -79,6 +82,7 @@ void loadPlugins(){
     if (plugins.count == 0){
         // Add example plugin
         Plugin* plugin = (Plugin*)malloc(sizeof(Plugin));
+		if(plugin == NULL) return;
         plugin->name = (char*)malloc(20);
         plugin->surname = (char*)malloc(20);
         plugin->path = (char*)malloc(strlen(sample_plugin_path)+1);

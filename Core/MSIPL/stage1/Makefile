@@ -13,7 +13,7 @@ STRIP = psp-strip
 OBJCOPY = psp-objcopy
 LINKFILE = linkfile.l
 INCDIR = $(PSPSDK)/include
-CFLAGS = -std=c99 -Wall -Os -G0 -fno-pic $(addprefix -I, $(INCDIR)) -DMS_IPL
+CFLAGS = -std=c99 -Wall -Os -G0 -fno-pic $(addprefix -I, $(INCDIR)) -DMS_IPL -g
 
 
 C_OBJS = \
