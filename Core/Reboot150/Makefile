@@ -9,7 +9,7 @@ OBJS = \
 all: $(TARGET).prx
 
 INCDIR =
-CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic -fshort-wchar -g
+CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic -fshort-wchar
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 

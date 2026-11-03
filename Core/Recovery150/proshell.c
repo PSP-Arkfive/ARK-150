@@ -324,7 +324,7 @@ int proshell_main()
 // Print Out of Bounds Text
 void printoob(char * text, int x, int y, unsigned int color)
 {
-	if(sizeof(text) <= 0)
+	if(text == NULL)
 		return;
     // Iterate Characters
     int i = 0; for(; i < strlen(text); i++)

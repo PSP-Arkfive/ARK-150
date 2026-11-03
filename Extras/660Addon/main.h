@@ -40,7 +40,7 @@ extern int nopts;
 int addon660_install();
 
 void setInfoMsg(int type, char* txt);
-void ExitWithMessage(int type, int reboot, int milisecs, char *fmt, ...);
+void ExitWithMessage(int type, int reboot, int milisecs, char *fmt, ...) __attribute__((noreturn));
 #define ErrorExit(_m_, _f_, ...)  ExitWithMessage(ERROR_MSG, 0, _m_, _f_, ##__VA_ARGS__)
 #define NormalExit(_m_, _f_, ...) ExitWithMessage(INFO_MSG,  0, _m_, _f_, ##__VA_ARGS__)
 #define RebootExit(_m_, _f_, ...) ExitWithMessage(INFO_MSG,  1, _m_, _f_, ##__VA_ARGS__)

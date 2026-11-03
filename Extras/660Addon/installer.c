@@ -657,11 +657,11 @@ static int GetReboot661()
     size = GetReboot(g_dataOut, g_dataOut2, size, 1);
 
     u8 *rebootBuf = FindRebootBinBuf(arkfiles[SYSTEMCTRL_150].buf, reboot661_header, arkfiles[SYSTEMCTRL_150].size);
-    if (&rebootBuf)
+    if (rebootBuf == NULL)
     {
         ErrorExit(5000, "Unable to insert 661 reboot.bin into systemctrl150.prx");
     }
-    memcpy(&rebootBuf, g_dataOut, size);
+    memcpy(rebootBuf, g_dataOut, size);
 	return 0;
 }
 
@@ -741,22 +741,22 @@ void ExtractPrxs(int cbFile)
                 {
                     cbExpanded = GetReboot(g_dataOut2, g_dataOut, cbExpanded, 0);
                     u8 *rebootBuf = FindRebootBinBuf(arkfiles[REBOOT_150].buf, reboot150_header, arkfiles[REBOOT_150].size);
-                    if (!rebootBuf)
+					if(rebootBuf == NULL)
                     {
                         ErrorExit(5000, "Unable to insert 150 reboot.bin into reboot150.prx");
                     }
-                    memcpy(&rebootBuf, g_dataOut, cbExpanded);
+                    memcpy(rebootBuf, g_dataOut, cbExpanded);
 
                     rebootBuf = FindRebootBinBuf(arkfiles[SYSTEMCTRL_150].buf, reboot150_header, arkfiles[SYSTEMCTRL_150].size);
-                    if (!rebootBuf)
+                    if (rebootBuf == NULL)
                     {
                         ErrorExit(5000, "Unable to insert 150 reboot.bin into systemctrl150.prx");
                     }
-                    memcpy(&rebootBuf, g_dataOut, cbExpanded);
+                    memcpy(rebootBuf, g_dataOut, cbExpanded);
                 }
             }
 
-            else if (!strcmp(name, "com:00000"))
+            else if (strcmp(name, "com:00000") == NULL)
             {
                 comtable_size = pspDecryptTable(g_dataOut2, g_dataOut, cbExpanded, 0);
                             

@@ -5,7 +5,7 @@ OBJS = \
 BUILD_PRX = 1
 
 INCDIR = include
-CFLAGS = -Os -G0 -Wall -g
+CFLAGS = -Os -G0 -Wall
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
