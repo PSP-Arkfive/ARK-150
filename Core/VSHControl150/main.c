@@ -172,6 +172,7 @@ static void patch_sysconf_plugin_module(SceModule *mod) {
     }
 
     if (se_config->hidemac){
+		char str[50];
         u32 top_addr = text_addr+mod->text_size;
         for (u32 addr=text_addr; addr < top_addr; addr++){
             if (   ((u8*)addr)[0] == 0x25
@@ -183,7 +184,9 @@ static void patch_sysconf_plugin_module(SceModule *mod) {
                 && ((u8*)addr)[6] == 0x58
                 && ((u8*)addr)[7] == 0 )
             {
-                _sw(0, addr);
+                //_sw(0, addr);
+				sprintf(str, "??:??:??:??:??:??");
+                ascii2utf16((char *)addr, str);
                 break;
             }
         }
@@ -220,7 +223,11 @@ static int vshpatch_module_chain(SceModule *mod)
 
   exit:
     sync_cache();
-    if (previous) previous(mod);
+    if (previous) {
+		previous(mod);
+		return 0;
+	}
+	return 0;
 }
 
 
