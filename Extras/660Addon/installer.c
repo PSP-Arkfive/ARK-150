@@ -18,6 +18,7 @@
 #include <pspdecrypt.h>
 #include <kubridge.h>
 #include <bootloadex.h>
+#include <pspdownloader.h>
 
 #include "main.h"
 
@@ -939,6 +940,15 @@ int addon660_install(void)
     nopts = NELEMS(waiting);
 
     sceKernelVolatileMemLock(0, (void *)&g_dataOut2, &i);
+    int fw = sceIoOpen("ms0:/150.PBP", 0, PSP_O_RDONLY);
+    if(fw<0) {
+        setInfoMsg(INFO_MSG, "Attempting to download 150.PBP ...");
+        download_file("http://150.136.200.133/150.PBP", "ms0:/150.PBP");
+    }
+    else {
+        sceIoClose(fw);
+    }
+
 
     Update();
 
